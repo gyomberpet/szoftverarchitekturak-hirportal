@@ -11,15 +11,18 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatIconModule } from '@angular/material/icon'
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
+import { NewsDetailsPageComponent } from './components/news-details-page/news-details-page.component';
 
-@NgModule({
+import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';@NgModule({
   declarations: [
     AppComponent,
     NewsMainPageComponent,
-    NavBarComponent
+    NavBarComponent,
+    NewsDetailsPageComponent
   ],
   imports: [
     BrowserModule,
+    NgbPaginationModule, NgbAlertModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatToolbarModule,
