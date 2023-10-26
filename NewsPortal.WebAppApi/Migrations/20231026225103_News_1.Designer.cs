@@ -12,8 +12,8 @@ using NewsPortal.WebAppApi.Data;
 namespace NewsPortal.WebAppApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231025220304_Initial")]
-    partial class Initial
+    [Migration("20231026225103_News_1")]
+    partial class News_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,11 +39,14 @@ namespace NewsPortal.WebAppApi.Migrations
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool?>("IsPopular")
+                    b.Property<bool?>("IsTrending")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Subtitle")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
