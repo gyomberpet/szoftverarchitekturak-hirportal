@@ -1,9 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace NewsPortal.WebAppApi.Models
 {
 	public class News
-	{
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //[Key]
         public string? Id { get; set; }
         public string? Title { get; set; }
         public string? Subtitle { get; set; }
