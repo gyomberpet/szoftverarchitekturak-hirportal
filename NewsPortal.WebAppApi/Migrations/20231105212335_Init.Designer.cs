@@ -12,8 +12,8 @@ using NewsPortal.WebAppApi.Data;
 namespace NewsPortal.WebAppApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231026225103_News_1")]
-    partial class News_1
+    [Migration("20231105212335_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,6 +28,7 @@ namespace NewsPortal.WebAppApi.Migrations
             modelBuilder.Entity("NewsPortal.WebAppApi.Models.News", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CategoryID")
@@ -38,6 +39,9 @@ namespace NewsPortal.WebAppApi.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsTrending")
                         .HasColumnType("bit");
@@ -72,6 +76,7 @@ namespace NewsPortal.WebAppApi.Migrations
             modelBuilder.Entity("NewsPortal.WebAppApi.Models.User", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EmailAddress")

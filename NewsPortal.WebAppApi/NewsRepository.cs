@@ -27,7 +27,6 @@ namespace NewsPortal.WebAppApi
 
         public void Update(News updatedNews)
         {
-            // You can add data access logic here to update the product.
             var existingNews = Get(updatedNews.Id);
             if (existingNews != null)
             {
