@@ -1,0 +1,12 @@
+<p>
+  <mat-toolbar color="primary">
+    <span>News</span>
+    <span class="spacer"></span>
+    <div style="font-size: medium">
+      <button mat-button [matMenuTriggerFor]="menu">Test User</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="signOut()">Sign out</button>
+      </mat-menu>
+    </div>
+  </mat-toolbar>
+</p>
