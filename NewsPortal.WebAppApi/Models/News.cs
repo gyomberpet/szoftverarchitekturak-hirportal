@@ -16,5 +16,6 @@ namespace NewsPortal.WebAppApi.Models
         public bool? IsTrending { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
-    }
+		public string? ImageUrl { get; set; }
+	}
 }
