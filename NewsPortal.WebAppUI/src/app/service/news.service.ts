@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { News } from '../models/news';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -86,4 +88,26 @@ export class NewsService {
   getNewsById(id: number): News {
     return this.TEMP_NEWS.find((news) => news.id === id) || new News();
   }
+/*
+  public news: News[] = [];
+
+  private _http: HttpClient;
+  private _baseUrl: string;
+
+  constructor(http: HttpClient, @Inject('BASE_URL') baseurl: string) {
+      this._http = http;
+      this._baseUrl = baseurl;
+  }
+
+  getAllSections(id: number): Observable<News[]> {
+      return this._http.get<News[]>(this._baseUrl + `section/getall?conferenceId=${id}`);
+  }
+
+  createSection(section: News): Observable<News> {
+      return this._http.post<News>(this._baseUrl + 'section', section);
+  }
+
+  removeSection(sectionId: number): any{
+      return this._http.delete<News>(this._baseUrl + `section/delete?id=${sectionId}`);
+  }*/
 }

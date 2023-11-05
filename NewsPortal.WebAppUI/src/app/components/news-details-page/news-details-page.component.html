@@ -62,8 +62,8 @@
           <p>{{ news.description }}</p>
         </div>
         <div class="news-trending">
-          <p *ngIf="news.isTrending"><strong>This news is trending!</strong></p>
-          <p *ngIf="!news.isTrending"><strong>This news is not trending.</strong></p>
+          <p class="bi bi-star" *ngIf="news.isTrending"><strong>This news is trending!</strong></p>
+          <p  class="bi bi-star"*ngIf="!news.isTrending"><strong>This news is not trending.</strong></p>
         </div>
         
    </article>
@@ -73,6 +73,8 @@
       <nav class="blog-pagination" aria-label="Pagination">
         <a class="btn btn-outline-primary" href="#">Older</a>
         <a class="btn btn-outline-secondary disabled" href="#" tabindex="-1" aria-disabled="true">Newer</a>
+        <a class="btn btn-danger" (click)="delete()" tabindex="-1" aria-disabled="true">Delete</a>
+       
       </nav>
 
     </div>

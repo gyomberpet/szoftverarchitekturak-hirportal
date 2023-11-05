@@ -11,16 +11,26 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatIconModule } from '@angular/material/icon'
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { NewsDetailsPageComponent } from './components/news-details-page/news-details-page.component';
 
-import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';@NgModule({
+import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
+import { DeleteNewsComponent } from './components/delete-news/delete-news.component';import { NewsService } from './service/news.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+@NgModule({
   declarations: [
     AppComponent,
     NewsMainPageComponent,
     NavBarComponent,
-    NewsDetailsPageComponent
+    NewsDetailsPageComponent,
+    DeleteNewsComponent
   ],
   imports: [
+    //BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }), serverhez még importálni kell app.server.module
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     BrowserModule,
     NgbPaginationModule, NgbAlertModule,
     AppRoutingModule,
@@ -29,9 +39,10 @@ import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap'
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
-    MatCardModule
+    MatCardModule,
+    MatDialogModule
   ],
-  providers: [],
+  providers: [NewsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
