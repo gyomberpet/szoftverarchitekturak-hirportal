@@ -25,6 +25,7 @@ namespace NewsPortal.WebAppApi.Migrations
             modelBuilder.Entity("NewsPortal.WebAppApi.Models.News", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CategoryID")
@@ -35,6 +36,9 @@ namespace NewsPortal.WebAppApi.Migrations
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool?>("IsTrending")
                         .HasColumnType("bit");
@@ -69,6 +73,7 @@ namespace NewsPortal.WebAppApi.Migrations
             modelBuilder.Entity("NewsPortal.WebAppApi.Models.User", b =>
                 {
                     b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EmailAddress")

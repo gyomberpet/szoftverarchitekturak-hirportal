@@ -13,7 +13,7 @@ namespace NewsPortal.WebAppApi.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=localhost;Trusted_Connection=True;");// Server=server name Database=db name 
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=NewsDb;Trusted_Connection=True;");// Server=server name Database=db name 
 
         }
         public DbSet<News> News { get; set; }
