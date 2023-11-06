@@ -4,6 +4,7 @@ using NewsPortal.WebAppApi.Data;
 using NewsPortal.WebAppApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using NewsPortal.WebAppApi.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,42 +38,13 @@ builder.Services.AddAuthentication(
         }
     );
 builder.Services.AddDbContext<DataContext>();
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<INewsRepository, NewsRepository>();
+
 
 var app = builder.Build();
 
-//Dataseeding start
-using var scope = app.Services.CreateScope();
-var services = scope.ServiceProvider;
 
-
-
-var dbContext = services.GetRequiredService<DataContext>();
-dbContext.Database.EnsureCreated();
-
-if (!dbContext.News.Any())
-{
-    var Newses = new List<News>
-        {
-            new News {Id = "1",Title = "DummyNews 1", Subtitle = "Something1", Content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", IsTrending=false },
-            new News {Id = "2", Title = "DummyNews 2", Subtitle = "Something2", Content="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", IsTrending=false },
-            new News {Id = "3", Title = "DummyNews 3", Subtitle = "Something3", Content = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.", IsTrending = true},
-        };
-
-    dbContext.News.AddRange(Newses);
-    dbContext.SaveChanges();
-}
-if (!dbContext.Users.Any())
-{
-    var Users = new List<User>
-        {
-            new User {Id = "1", UserName = "gipszjakab", EmailAddress = "admin@kft.hu", Password = "1234",  IsAdmin = true },
-            new User {Id = "2",UserName = "shrek", EmailAddress = "onion@nasa.gov", Password = "1234",  IsAdmin = false }
-        };
-
-    dbContext.Users.AddRange(Users);
-    dbContext.SaveChanges();
-}
-//Dataseeding end
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

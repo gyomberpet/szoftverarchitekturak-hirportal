@@ -5,9 +5,9 @@ namespace NewsPortal.WebAppApi.Models
 {
     public class User
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
-        public string Id { get; set; }
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public string Id { get; set; }
         public string UserName { get; set; }
         public string EmailAddress { get; set; }
         public string Password { get; set; }
