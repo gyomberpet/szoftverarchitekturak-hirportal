@@ -5,9 +5,10 @@ using NewsPortal.WebAppApi.Models;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using NewsPortal.WebAppApi.Repositories;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,24 +24,31 @@ builder.Services.AddAuthentication(
     .AddJwtBearer(
         options =>
         {
-            options.TokenValidationParameters = new TokenValidationParameters
+			var tokenSettings = builder.Configuration.GetSection("Token");
+
+			options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
 
-                ValidIssuer = "https://localhost:7021",//Saját localhost PORTJÁT írd be, kb nem fog müködni
-                ValidAudience = "https://localhost:7021",//Saját localhost PORTJÁT írd be, kb nem fog müködni
+                ValidIssuer = tokenSettings["ValidIssuer"],
+                ValidAudience = tokenSettings["ValidAudience"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
 
             };
         }
     );
+
+builder.Services.AddDbContext<DataContext>(options =>
+{
+	options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
 builder.Services.AddDbContext<DataContext>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<INewsRepository, NewsRepository>();
-
 
 var app = builder.Build();
 
