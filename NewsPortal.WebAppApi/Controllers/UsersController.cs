@@ -17,8 +17,10 @@ namespace NewsPortal.WebAppApi.Controllers
     public class UsersController : ControllerBase
     {
 		private readonly IUsersRepository usersRepository;
+		private readonly IConfiguration configuration;
 
-		public UsersController(IUsersRepository usersRepository) {
+		public UsersController(IConfiguration configuration, IUsersRepository usersRepository) {
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.usersRepository = usersRepository ?? throw new ArgumentNullException(nameof(usersRepository));
         }
 
@@ -139,14 +141,15 @@ namespace NewsPortal.WebAppApi.Controllers
 		}
         private string CreatingToken()
         {
-            SymmetricSecurityKey secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
+			var tokenSettings = configuration.GetSection("Token");
+			SymmetricSecurityKey secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
             SigningCredentials signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             JwtSecurityToken tokeOptions = new JwtSecurityToken(
-                    issuer: "https://localhost:7021",//Saját localhost PORTJÁT írd be, kb nem fog müködni
-                    audience: "https://localhost:7021",//Saját localhost PORTJÁT írd be, kb nem fog müködni
-                    claims: new List<Claim>(),
-                    expires: DateTime.Now.AddMinutes(5),
+                    issuer: tokenSettings["ValidIssuer"],
+					audience: tokenSettings["ValidAudience"],
+					claims: new List<Claim>(),
+                    expires: DateTime.Now.AddDays(1),
                     signingCredentials: signingCredentials
                 );
 
