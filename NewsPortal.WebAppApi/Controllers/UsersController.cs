@@ -100,16 +100,16 @@ namespace NewsPortal.WebAppApi.Controllers
 
 		[HttpPost, Route("login")]
         [AllowAnonymous]
-        public async Task<IActionResult> Login([FromBody]User userInfo)
+        public async Task<IActionResult> Login([FromBody] LoginInfo loginInfo)
         {
-            if (userInfo == null)
+            if (loginInfo == null)
             {
                 return BadRequest("Bad client request");
             }
 
-            var user = await usersRepository.GetUserByEmail(userInfo.EmailAddress);
+            var user = await usersRepository.GetUserByEmail(loginInfo.EmailAddress);
 
-            if (user.Password != userInfo.Password) 
+            if (user.Password != loginInfo.Password) 
             {
 				return Unauthorized();
 			}
@@ -121,15 +121,22 @@ namespace NewsPortal.WebAppApi.Controllers
 
         [HttpPost, Route("register")]
 		[AllowAnonymous]
-		public async Task<IActionResult> Register([FromBody]User user)
+		public async Task<IActionResult> Register([FromBody]LoginInfo loginInfo)
         {
-            if (user == null)
+            if (loginInfo == null)
             {
                 return BadRequest("Bad client request");
             }
 
             try
             {
+				var user = new User()
+				{
+					UserName = loginInfo.UserName,
+					EmailAddress = loginInfo.EmailAddress,
+					Password = loginInfo.Password,
+				};
+
                 await usersRepository.AddUser(user);
                 var tokenString = CreatingToken();
                 return Ok(new { Token = tokenString });

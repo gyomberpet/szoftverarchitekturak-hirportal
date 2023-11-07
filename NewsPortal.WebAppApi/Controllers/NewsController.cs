@@ -43,6 +43,16 @@ namespace NewsPortal.WebAppApi.Controllers
 			return Ok(newsList);
 		}
 
+		[HttpGet]
+		[Route("random/{category}/{amount}")]
+		[AllowAnonymous]
+		public async Task<ActionResult<IEnumerable<News>>> GetRandomNewsByCategory(string category, int amount)
+		{
+			var newsList = await newsRepository.GetRandomNewsByCategory(category, amount);
+
+			return Ok(newsList);
+		}
+
 
 		[Route("category/{category}")]
 		[AllowAnonymous]

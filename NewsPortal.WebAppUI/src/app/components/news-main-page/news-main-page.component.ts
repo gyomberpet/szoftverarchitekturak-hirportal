@@ -3,7 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 import { News } from 'src/app/models/news';
 import { NewsService } from 'src/app/service/news.service';
-
+import { UsersService } from 'src/app/service/users.service';
 
 @Component({
   selector: 'app-news-main-page',
@@ -13,9 +13,14 @@ import { NewsService } from 'src/app/service/news.service';
 export class NewsMainPageComponent implements OnInit {
   newsList: News[];
 
-  constructor(private newsService: NewsService) {}
+  constructor(private newsService: NewsService, private usersService:UsersService) {}
 
   ngOnInit(): void {
-    this.newsList = this.newsService.getNews();
+    this.newsService
+      .getNews()
+      .subscribe({
+        next: (res: News[]) => (this.newsList = res),
+        error: (err) => console.error(err),
+      });
   }
 }

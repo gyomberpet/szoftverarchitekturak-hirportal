@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NewsPortal.WebAppApi.Data;
 using NewsPortal.WebAppApi.Models;
+using System;
 using System.Collections.Generic;
 
 namespace NewsPortal.WebAppApi.Repositories
@@ -28,6 +29,18 @@ namespace NewsPortal.WebAppApi.Repositories
 				.FirstOrDefaultAsync(n => n.Id == id);
 
 			return news;
+		}
+
+		public async Task<IEnumerable<News>> GetRandomNewsByCategory(string categoryName, int amount)
+		{
+			var newsByCategory = await context.News
+				.Where(n => n.Category.Name == categoryName)
+				.OrderBy(x => Guid.NewGuid()) // Random order
+				.Take(amount)
+				.Include(n => n.Category)
+				.ToListAsync();
+
+			return newsByCategory;
 		}
 
 		public async Task<IEnumerable<News>> ListNewsByCategory(string categoryName)
