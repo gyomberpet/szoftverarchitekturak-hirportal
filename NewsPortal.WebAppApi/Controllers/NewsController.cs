@@ -64,6 +64,7 @@ namespace NewsPortal.WebAppApi.Controllers
 			return Ok(newsList);
 		}
 
+		[AllowAnonymous]
 		[HttpPost]
 		public async Task<ActionResult<News>> AddNews([FromBody] News news)
 		{
