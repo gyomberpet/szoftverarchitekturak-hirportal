@@ -1,4 +1,4 @@
-import {  Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { News } from '../models/news';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -17,25 +17,31 @@ export class NewsService {
   }
 
   getNewsById(id: number): Observable<News> {
-    const url = `${this.baseUrl}/${id}`
+    const url = `${this.baseUrl}/${id}`;
 
     return this.http.get<News>(url);
   }
 
-  getRandomNewsByCategory(category: string, amount: number): Observable<News[]> {
-    const url = `${this.baseUrl}/random/${category}/${amount}`
+  getRandomNewsByCategory(
+    category: string,
+    amount: number
+  ): Observable<News[]> {
+    const url = `${this.baseUrl}/random/${category}/${amount}`;
 
     return this.http.get<News[]>(url);
   }
 
   getNewsByCategory(category: string): Observable<News[]> {
-    const url = `${this.baseUrl}/category/${category}`
+    const url = `${this.baseUrl}/category/${category}`;
 
     return this.http.get<News[]>(url);
   }
 
   createNews(news: News): Observable<News> {
-    return this.http.post<News>(this.baseUrl, news);
+    console.log(news);
+    return this.http.post<News>(this.baseUrl, news, {
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   updateNews(news: News): Observable<News> {
@@ -43,7 +49,7 @@ export class NewsService {
   }
 
   deleteeNews(id: string): Observable<boolean> {
-    const url = `${this.baseUrl}/${id}`
+    const url = `${this.baseUrl}/${id}`;
 
     return this.http.delete<boolean>(url);
   }

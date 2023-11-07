@@ -14,11 +14,13 @@ namespace NewsPortal.WebAppApi.Controllers
 
 		private readonly ILogger<NewsController> logger;
 		private readonly INewsRepository newsRepository;
+		private readonly IImageRepository imageRepository;
 
-		public NewsController(ILogger<NewsController> logger, INewsRepository newsRepository)
+		public NewsController(ILogger<NewsController> logger, INewsRepository newsRepository, IImageRepository imageRepository)
 		{
 			this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			this.newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
+			this.imageRepository = imageRepository ?? throw new ArgumentNullException(nameof(imageRepository));
 		}
 
 		[Route("{id}")]
@@ -64,12 +66,18 @@ namespace NewsPortal.WebAppApi.Controllers
 			return Ok(newsList);
 		}
 
-		[AllowAnonymous]
 		[HttpPost]
 		public async Task<ActionResult<News>> AddNews([FromBody] News news)
 		{
 			if (news == null) return BadRequest();
 
+			if(news.Image != null) 
+			{
+				var uploadedImage = await imageRepository.UploadImage(news.Image);
+
+				news.ImageId = uploadedImage.Id;
+			}
+			
 			var created = await newsRepository.AddNews(news);
 
 			return Ok(created);

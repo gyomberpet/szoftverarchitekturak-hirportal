@@ -64,6 +64,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddDbContext<DataContext>();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<INewsRepository, NewsRepository>();
+builder.Services.AddScoped<IImageRepository, ImageRepository>();
 
 var app = builder.Build();
 

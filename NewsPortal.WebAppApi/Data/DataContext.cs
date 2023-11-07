@@ -15,6 +15,7 @@ namespace NewsPortal.WebAppApi.Data
         public DbSet<News> News { get; set; }
         public DbSet<NewsCategory> NewsCategories { get; set; }
         public DbSet<User> Users { get; set; }
+		public DbSet<Image> Images { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -30,9 +31,17 @@ namespace NewsPortal.WebAppApi.Data
 				.Property(u => u.Id)
 				.ValueGeneratedOnAdd();
 
+			modelBuilder.Entity<Image>()
+				.Property(i => i.Id)
+				.ValueGeneratedOnAdd();
+
 
 			modelBuilder.Entity<News>()
 				.Navigation(x => x.Category)
+				.UsePropertyAccessMode(PropertyAccessMode.Property);
+
+			modelBuilder.Entity<News>()
+				.Navigation(x => x.Image)
 				.UsePropertyAccessMode(PropertyAccessMode.Property);
 
 

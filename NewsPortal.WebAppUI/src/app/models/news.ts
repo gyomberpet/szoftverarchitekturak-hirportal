@@ -1,3 +1,4 @@
+import { Image } from "./image";
 import { NewsCategory } from "./newsCategory";
 
 export class News {
@@ -6,9 +7,10 @@ export class News {
   public subtitle?: string;
   public category: NewsCategory;
   public description?: string;
-  public imageUrl?: string;
   public publishedAt:string //Date = new Date(Date.now())
   public expiredAt:string //Date = new Date(Date.now())
   public createBy:string
   public isTrending?: boolean;
+  public image?: Image;
+  public imageUrl?: string;
 }

@@ -18,13 +18,15 @@ import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap'
 import { DeleteNewsComponent } from './components/delete-news/delete-news.component';import { NewsService } from './service/news.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CreateNewsComponent } from './components/create-news/create-news.component';
 @NgModule({
   declarations: [
     AppComponent,
     NewsMainPageComponent,
     NavBarComponent,
     NewsDetailsPageComponent,
-    DeleteNewsComponent
+    DeleteNewsComponent,
+    CreateNewsComponent
   ],
   imports: [
     //BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }), serverhez még importálni kell app.server.module
