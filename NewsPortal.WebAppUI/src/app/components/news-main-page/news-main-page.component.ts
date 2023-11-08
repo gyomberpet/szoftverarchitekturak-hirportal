@@ -2,6 +2,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { News } from 'src/app/models/news';
+import { NewsRequestParams } from 'src/app/models/newsRequestParams';
 import { NewsService } from 'src/app/service/news.service';
 import { UsersService } from 'src/app/service/users.service';
 
@@ -16,8 +17,12 @@ export class NewsMainPageComponent implements OnInit {
   constructor(private newsService: NewsService, private usersService:UsersService) {}
 
   ngOnInit(): void {
+    let requestParams: NewsRequestParams = {
+      includeImage: true,
+    } as NewsRequestParams;
+
     this.newsService
-      .getNews()
+      .getNews(requestParams)
       .subscribe({
         next: (res: News[]) => (this.newsList = res),
         error: (err) => console.error(err),

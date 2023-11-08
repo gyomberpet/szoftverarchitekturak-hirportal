@@ -19,5 +19,12 @@ namespace NewsPortal.WebAppApi.Repositories
 
 			return image;
 		}
+
+		public async Task<Image> GetImage(string id)
+		{
+			var image = await context.Images.FindAsync(id);
+
+			return image;
+		}
 	}
 }

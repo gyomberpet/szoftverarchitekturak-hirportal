@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { News } from '../models/news';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../environments';
+import { NewsRequestParams } from '../models/newsRequestParams';
 
 const baseUrl = environment.baseUrl;
 @Injectable({
@@ -12,8 +13,17 @@ export class NewsService {
   constructor(private http: HttpClient) {}
   baseUrl: string = `${baseUrl}/news`;
 
-  getNews(): Observable<News[]> {
-    return this.http.get<News[]>(this.baseUrl);
+  getNews(requestParams: NewsRequestParams): Observable<News[]> {
+    let params = new HttpParams()
+      .set('includeImage', requestParams.includeImage);
+    if(requestParams.categoryName)
+      params.set('categoryName', requestParams.categoryName);
+    if(requestParams.categoryName)
+      params.set('pageIndex', requestParams.pageIndex ?? '');
+    if(requestParams.categoryName)
+      params.set('pageSize', requestParams.pageSize ?? '');
+
+    return this.http.get<News[]>(this.baseUrl, { params: params });
   }
 
   getNewsById(id: number): Observable<News> {
@@ -27,12 +37,6 @@ export class NewsService {
     amount: number
   ): Observable<News[]> {
     const url = `${this.baseUrl}/random/${category}/${amount}`;
-
-    return this.http.get<News[]>(url);
-  }
-
-  getNewsByCategory(category: string): Observable<News[]> {
-    const url = `${this.baseUrl}/category/${category}`;
 
     return this.http.get<News[]>(url);
   }

@@ -14,10 +14,20 @@ namespace NewsPortal.WebAppApi.Repositories
 		{
 			this.context = context ?? throw new ArgumentNullException(nameof(context));
 		}
-		public async Task<IEnumerable<News>> ListNews()
+		public async Task<IEnumerable<News>> ListNews(NewsRequestParams param)
 		{
-			var news = await context.News
+			var query = context.News.AsQueryable();
+
+			if (!string.IsNullOrWhiteSpace(param.CategoryName))
+				query = query.Where(n => n.Category.Name == param.CategoryName);
+
+			if (param.IncludeImage)
+				query = query.Include(n => n.Image);
+
+			var news = await query
 				.Include(n => n.Category)
+				.Skip(param.PageIndex * param.PageSize)
+				.Take(param.PageSize)
 				.ToListAsync();
 
 			return news;
@@ -26,6 +36,7 @@ namespace NewsPortal.WebAppApi.Repositories
 		{
 			var news = await context.News
 				.Include(n => n.Category)
+				.Include(n => n.Image)
 				.FirstOrDefaultAsync(n => n.Id == id);
 
 			return news;
@@ -38,16 +49,7 @@ namespace NewsPortal.WebAppApi.Repositories
 				.OrderBy(x => Guid.NewGuid()) // Random order
 				.Take(amount)
 				.Include(n => n.Category)
-				.ToListAsync();
-
-			return newsByCategory;
-		}
-
-		public async Task<IEnumerable<News>> ListNewsByCategory(string categoryName)
-		{
-			var newsByCategory = await context.News
-				.Where(n => n.Category.Name == categoryName)
-				.Include(n => n.Category)
+				.Include(n => n.Image)
 				.ToListAsync();
 
 			return newsByCategory;

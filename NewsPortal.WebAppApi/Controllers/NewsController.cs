@@ -38,9 +38,9 @@ namespace NewsPortal.WebAppApi.Controllers
 
 		[HttpGet]
 		[AllowAnonymous]
-		public async Task<ActionResult<IEnumerable<News>>> GetAllNews()
+		public async Task<ActionResult<IEnumerable<News>>> GetAllNews([FromQuery] NewsRequestParams param)
 		{
-			var newsList = await newsRepository.ListNews();
+			var newsList = await newsRepository.ListNews(param);
 
 			return Ok(newsList);
 		}
@@ -55,16 +55,6 @@ namespace NewsPortal.WebAppApi.Controllers
 			return Ok(newsList);
 		}
 
-
-		[Route("category/{category}")]
-		[AllowAnonymous]
-		[HttpGet]
-		public async Task<ActionResult<IEnumerable<News>>> GetNewsByCategory(string category)
-		{
-			var newsList = await newsRepository.ListNewsByCategory(category);
-
-			return Ok(newsList);
-		}
 
 		[HttpPost]
 		public async Task<ActionResult<News>> AddNews([FromBody] News news)
