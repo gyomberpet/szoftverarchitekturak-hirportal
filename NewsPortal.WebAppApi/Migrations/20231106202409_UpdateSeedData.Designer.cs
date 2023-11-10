@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NewsPortal.WebAppApi.Data;
 
@@ -11,9 +12,11 @@ using NewsPortal.WebAppApi.Data;
 namespace NewsPortal.WebAppApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231106202409_UpdateSeedData")]
+    partial class UpdateSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,20 +24,6 @@ namespace NewsPortal.WebAppApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("NewsPortal.WebAppApi.Models.Image", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<byte[]>("Data")
-                        .HasColumnType("varbinary(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Images");
-                });
 
             modelBuilder.Entity("NewsPortal.WebAppApi.Models.News", b =>
                 {
@@ -51,8 +40,8 @@ namespace NewsPortal.WebAppApi.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImageId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsTrending")
                         .HasColumnType("bit");
@@ -69,8 +58,6 @@ namespace NewsPortal.WebAppApi.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryID");
-
-                    b.HasIndex("ImageId");
 
                     b.ToTable("News");
 
@@ -107,39 +94,6 @@ namespace NewsPortal.WebAppApi.Migrations
                             StartDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Subtitle = "Features High-Resolution Camera",
                             Title = "Tech Giant Launches New Smartphone"
-                        },
-                        new
-                        {
-                            Id = "4",
-                            CategoryID = "3",
-                            Content = "Apple has just announced the iPhone 14 Pro Max, featuring a revolutionary foldable display and an AI-powered camera system. This device promises to redefine the smartphone landscape with its innovative features and sleek design.",
-                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsTrending = true,
-                            StartDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Subtitle = "A Game-Changer in Smartphone Technology",
-                            Title = "Apple Unveils the Latest iPhone 14 Pro Max"
-                        },
-                        new
-                        {
-                            Id = "5",
-                            CategoryID = "3",
-                            Content = "Google's quantum computing team has achieved a major milestone, demonstrating a quantum computer capable of solving complex problems faster than ever before. This breakthrough has the potential to impact fields such as cryptography, drug discovery, and climate modeling.",
-                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsTrending = true,
-                            StartDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Subtitle = "A Leap Toward Solving Complex Problems",
-                            Title = "Google's Quantum Computing Breakthrough"
-                        },
-                        new
-                        {
-                            Id = "6",
-                            CategoryID = "3",
-                            Content = "In a historic move, the U.S. government has officially granted Tesla permission to deploy fully autonomous vehicles on public highways. Tesla's Autopilot system has reached a level of reliability and safety that is paving the way for a future with self-driving cars.",
-                            EndDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsTrending = true,
-                            StartDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Subtitle = "A New Era for Autonomous Vehicle",
-                            Title = "Tesla's Self-Driving Cars Now Legal on U.S. Highways"
                         });
                 });
 
@@ -218,16 +172,15 @@ namespace NewsPortal.WebAppApi.Migrations
             modelBuilder.Entity("NewsPortal.WebAppApi.Models.News", b =>
                 {
                     b.HasOne("NewsPortal.WebAppApi.Models.NewsCategory", "Category")
-                        .WithMany()
+                        .WithMany("NewsList")
                         .HasForeignKey("CategoryID");
 
-                    b.HasOne("NewsPortal.WebAppApi.Models.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
-
                     b.Navigation("Category");
+                });
 
-                    b.Navigation("Image");
+            modelBuilder.Entity("NewsPortal.WebAppApi.Models.NewsCategory", b =>
+                {
+                    b.Navigation("NewsList");
                 });
 #pragma warning restore 612, 618
         }

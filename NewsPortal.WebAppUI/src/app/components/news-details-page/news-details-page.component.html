@@ -28,7 +28,7 @@
     
 <div class="container">
   <p>
-    <span class="bg-gray">{{ news.category }}</span>
+    <span class="bg-gray">{{ news.category.name }}</span>
   </p>
   <header class="blog-header py-4">
     <div class="row flex-nowrap justify-content-between align-items-center">
@@ -49,7 +49,7 @@
       <h3 class="pb-4 mb-4 fst-italic border-bottom">
 
         <div class="news-image">
-          <img src="{{ news.imageUrl }}" alt="{{ news.title }}" class="img-fluid" />
+          <img src="data:image/png;base64,{{ news.image?.data }}" alt="{{ news.title }}" class="img-fluid" />
         </div>
       </h3>
 
@@ -88,7 +88,7 @@
           <mat-card class="card">
             <a routerLink="{{news.id}}">
               <div *ngFor="let randomNews of randomNewsList" class="random-news-item">
-                <img src="{{ randomNews.imageUrl }}" alt="{{ randomNews.title }}" class="img-thumbnail" />
+                <img src="data:image/png;base64,{{ news.image?.data }}" alt="{{ randomNews.title }}" class="img-thumbnail" />
                 <h3><strong>{{ randomNews.title }}</strong></h3>
               </div>
           </a>

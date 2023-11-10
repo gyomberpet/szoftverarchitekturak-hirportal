@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NewsPortal.WebAppApi.Data;
 
@@ -11,9 +12,11 @@ using NewsPortal.WebAppApi.Data;
 namespace NewsPortal.WebAppApi.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231107142702_AddMoreSeedData")]
+    partial class AddMoreSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,20 +24,6 @@ namespace NewsPortal.WebAppApi.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("NewsPortal.WebAppApi.Models.Image", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<byte[]>("Data")
-                        .HasColumnType("varbinary(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Images");
-                });
 
             modelBuilder.Entity("NewsPortal.WebAppApi.Models.News", b =>
                 {
@@ -51,8 +40,8 @@ namespace NewsPortal.WebAppApi.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImageId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsTrending")
                         .HasColumnType("bit");
@@ -69,8 +58,6 @@ namespace NewsPortal.WebAppApi.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryID");
-
-                    b.HasIndex("ImageId");
 
                     b.ToTable("News");
 
@@ -221,13 +208,7 @@ namespace NewsPortal.WebAppApi.Migrations
                         .WithMany()
                         .HasForeignKey("CategoryID");
 
-                    b.HasOne("NewsPortal.WebAppApi.Models.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
-
                     b.Navigation("Category");
-
-                    b.Navigation("Image");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,14 +1,13 @@
-﻿using Microsoft.Extensions.Hosting;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 namespace NewsPortal.WebAppApi.Models
 {
-    public class NewsCategory
-    {
+	public class Image
+	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public string Id { get; set; }
-		public string Name { get; set; }
+		public byte[] Data { get; set; }
 	}
 }

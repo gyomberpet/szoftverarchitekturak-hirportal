@@ -9,20 +9,21 @@ import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-news-details-page',
-  templateUrl: './news-details-page.component.html',  
-  styleUrls: ['./news-details-page.component.css'],  
-}) 
-export class NewsDetailsPageComponent implements OnInit { 
+  templateUrl: './news-details-page.component.html',
+  styleUrls: ['./news-details-page.component.css'],
+})
+export class NewsDetailsPageComponent implements OnInit {
   news: News = new News();
-  randomNewsList: News[] = [];  
- 
+  randomNewsList: News[] = [];
+
   constructor(
     private route: ActivatedRoute,
-    private router: Router, 
+    private router: Router,
     private newsService: NewsService,
-    private dialogRef:MatDialog,
+    private dialogRef: MatDialog,
     private modalService: NgbModal
-  ) {/*
+  ) {
+    /*
     this.route.params.subscribe(params =>
     {
     this.news = this.news.find(m => m.id == params.id)
@@ -31,19 +32,29 @@ export class NewsDetailsPageComponent implements OnInit {
     }
     })
     */
- 
-    }
-    delete(){
-      this.dialogRef.open(DeleteNewsComponent);
-    }
+  }
+  delete() {
+    this.dialogRef.open(DeleteNewsComponent);
+  }
   ngOnInit(): void {
     const id = +this.route.snapshot.paramMap.get('id')!;
-    this.news = this.newsService.getNewsById(id);
+    this.newsService.getNewsById(id).subscribe({
+      next: (res: News) => {
+        this.news = res;
+        this.newsService.getRandomNewsByCategory(this.news.category.name, 3).subscribe({
+          next: (res: News[]) => {
+            this.randomNewsList = res.filter(x => x.id !== this.news.id)
+          },
+          error: (err) => console.error(err),
+        });
+      },
+      error: (err) => console.error(err),
+    });
+
     // Generate a list of 3 random news articles
-    this.randomNewsList = this.newsService.generateRandomNewsList(2);
-  
   }
- /* delete(){
+
+  /* delete(){
     let modal = this.modalService.open(DeleteNewsComponent, { backdrop: 'static', centered: true });
     (modal.componentInstance as DeleteNewsComponent)
       .initParameters({

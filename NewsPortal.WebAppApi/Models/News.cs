@@ -6,9 +6,9 @@ namespace NewsPortal.WebAppApi.Models
 {
 	public class News
     {
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //[Key]
-        public string Id { get; set; }
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public string Id { get; set; }
         public string Title { get; set; }
         public string Subtitle { get; set; }
         public string CategoryID { get; set; }
@@ -16,6 +16,8 @@ namespace NewsPortal.WebAppApi.Models
         public bool IsTrending { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-		public string ImageUrl { get; set; }
+		public string ImageId { get; set; }
+        public NewsCategory Category { get; set; }
+        public Image Image { get; set; }
 	}
 }
