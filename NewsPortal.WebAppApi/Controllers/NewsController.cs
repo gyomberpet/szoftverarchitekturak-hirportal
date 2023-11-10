@@ -8,7 +8,7 @@ namespace NewsPortal.WebAppApi.Controllers
 {
 	[ApiController]
 	[Route("api/v1/news")]
-	[Authorize]
+	//[Authorize]
 	public class NewsController : ControllerBase
 	{
 

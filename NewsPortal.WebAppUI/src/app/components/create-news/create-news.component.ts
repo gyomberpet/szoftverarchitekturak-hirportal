@@ -31,15 +31,15 @@ export class CreateNewsComponent {
           currentDate.setDate(currentDate.getDate() + NEWS_EXPIRATION_IN_DAYS)
         );
         let news: News = {
+      
           title: 'teszt',
           subtitle: 'sub teszt',
           category: {
             name: 'tt',
           },
-          description: 'piuasdhhfwaipefwuqefwwefuqwef',
-          publishedAt: currentDate.toISOString(),
-          expiredAt: expirationDate.toISOString(),
-          createBy: 'teszt user',
+          content: 'piuasdhhfwaipefwuqefwwefuqwef',
+          startDate: currentDate.toISOString(),
+          endDate: expirationDate.toISOString(),
           isTrending: true,
           image: {
             data: base64image,
