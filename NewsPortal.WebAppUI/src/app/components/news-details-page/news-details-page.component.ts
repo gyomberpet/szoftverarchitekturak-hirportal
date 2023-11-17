@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { News } from 'src/app/models/news';
 import { NewsService } from 'src/app/service/news.service';
 import { DeleteNewsComponent } from '../delete-news/delete-news.component';
-import { AppComponent } from 'src/app/app.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -15,27 +14,16 @@ import { MatDialog } from '@angular/material/dialog';
 export class NewsDetailsPageComponent implements OnInit {
   news: News = new News();
   randomNewsList: News[] = [];
-
+  private reloadComponent: boolean = false; // Belső állapotváltozó
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private newsService: NewsService,
     private dialogRef: MatDialog,
     private modalService: NgbModal
-  ) {
-    /*
-    this.route.params.subscribe(params =>
-    {
-    this.news = this.news.find(m => m.id == params.id)
-    if (this.news === undefined){
-      app.router.navigate(['movies'])
-    }
-    })
-    */
-  }
-  delete() {
-    this.dialogRef.open(DeleteNewsComponent);
-  }
+    
+  ) {}
+
   ngOnInit(): void {
     const id = +this.route.snapshot.paramMap.get('id')!;
     this.newsService.getNewsById(id).subscribe({
@@ -50,26 +38,41 @@ export class NewsDetailsPageComponent implements OnInit {
       },
       error: (err) => console.error(err),
     });
-
-    // Generate a list of 3 random news articles
+    // Újratöltés ellenőrzése
+  }
+  navigateToNews(newsId?: number): void {
+    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['news', newsId]);
+    });
   }
 
-  /* delete(){
-    let modal = this.modalService.open(DeleteNewsComponent, { backdrop: 'static', centered: true });
-    (modal.componentInstance as DeleteNewsComponent)
-      .initParameters({
-        news : this.news
-      }, {
-        restart: () => {
-          modal.close();
-        }
-      });
-     /* modal.componentInstance.restart.subscribe((recievedEntry) => {
-        if (recievedEntry === true){
-          this.app.movies.splice(this.app.movies.indexOf(this.movie),1);
-          this.app.router.navigate(['/movies']);
-          this.app.saveall();
-        }
-      });
-  }*/
+  openDeleteModal(): void {
+    const modalRef = this.modalService.open(DeleteNewsComponent);
+
+    modalRef.componentInstance.news = this.news; // Pass data to the DeleteNewsComponent
+
+    modalRef.result.then((result) => {
+      // Handle the result after the modal is closed
+      if (result === 'delete') {
+        this.deleteNews();
+      }
+    });
+  }
+
+  deleteNews(): void {
+    // Implement the delete logic here
+    const id = +this.route.snapshot.paramMap.get('id')!;
+    this.newsService.deleteeNews(id.toString()).subscribe({
+      next: (result) => {
+        // Handle the result after successful deletion
+        this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this.router.navigate(['news']);
+        });
+        // Optionally, navigate to a different route or perform other actions
+      },
+      error: (err) => console.error('Error deleting news', err),
+    });
+  }
+
+
 }
