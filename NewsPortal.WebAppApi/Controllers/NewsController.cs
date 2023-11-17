@@ -87,7 +87,7 @@ namespace NewsPortal.WebAppApi.Controllers
 		[HttpDelete]
 		public async Task<ActionResult<bool>> DeleteNews(string id)
 		{
-			var news = newsRepository.GetNews(id);
+			var news = await newsRepository.GetNews(id);
 
 			if (news == null)
 			{
