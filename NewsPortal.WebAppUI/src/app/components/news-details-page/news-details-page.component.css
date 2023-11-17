@@ -1,5 +1,9 @@
 /* stylelint-disable selector-list-comma-newline-after */
-
+.star-icon {
+  width: 1em; /* Az ikon szélessége az alapértelmezett betűméret (font-size) alapján */
+  height: 1em; /* Az ikon magassága az alapértelmezett betűméret (font-size) alapján */
+  vertical-align: middle; /* Igazítás a középre, hogy mellette legyen a cím */
+}
 .blog-header {
     line-height: 1;
     border-bottom: 1px solid #e5e5e5;

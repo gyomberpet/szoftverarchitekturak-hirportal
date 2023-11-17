@@ -1,35 +1,23 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { News } from 'src/app/models/news';
 
 @Component({
   selector: 'app-delete-news',
   templateUrl: './delete-news.component.html',
-  styleUrls: ['./delete-news.component.css']
+  styleUrls: ['./delete-news.component.css'],
 })
 export class DeleteNewsComponent {
-  @Input()
-  news: News = new News();
-  @Output()
-  restart = new EventEmitter<void>();
-  constructor(){ }
+  @Input() news: News;
 
-  ngOnInit(): void {
+  constructor(public activeModal: NgbActiveModal) {}
+
+  confirmDelete(): void {
+    // Optionally, you can perform additional logic before confirming the delete
+    this.activeModal.close('delete');
   }
-  passBack(choice:any) {
-    this.restart.emit(choice);
+
+  cancelDelete(): void {
+    this.activeModal.dismiss('cancel');
   }
-  yes(){
-    this.passBack(true);
-  }
-  no(){
-    this.passBack(false);
-  }
-  /*initParameters(inputs: { news: News}, outputs: { restart: (...args: any[]) => any }) {
-    for (let prop in inputs)
-      this[prop:] = inputs[prop];
-    for (let prop in outputs)
-      (this[prop] as EventEmitter<any>).subscribe(outputs[prop]);
-  }
-    
-  */
 }

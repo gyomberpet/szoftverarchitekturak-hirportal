@@ -8,7 +8,7 @@ namespace NewsPortal.WebAppApi.Controllers
 {
 	[ApiController]
 	[Route("api/v1/news")]
-	[Authorize]
+	//[Authorize]
 	public class NewsController : ControllerBase
 	{
 
@@ -87,7 +87,7 @@ namespace NewsPortal.WebAppApi.Controllers
 		[HttpDelete]
 		public async Task<ActionResult<bool>> DeleteNews(string id)
 		{
-			var news = newsRepository.GetNews(id);
+			var news = await newsRepository.GetNews(id);
 
 			if (news == null)
 			{
