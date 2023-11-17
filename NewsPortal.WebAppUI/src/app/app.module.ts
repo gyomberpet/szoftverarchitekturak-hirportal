@@ -24,13 +24,12 @@ import { UserTablePageComponent } from './components/user-table-page/user-table-
 @NgModule({
   declarations: [
     AppComponent,
-    NewsMainPageComponent,
+    NewsMainPageComponent,  
     NavBarComponent,
     NewsDetailsPageComponent,
     DeleteNewsComponent,
     CreateNewsComponent,
-    LoginComponent
-    CreateNewsComponent,
+    LoginComponent,
     UserTablePageComponent
   ],
   imports: [
