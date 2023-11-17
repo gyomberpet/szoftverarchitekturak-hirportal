@@ -46,7 +46,11 @@ export class UsersService {
   updateUser(user: User): Observable<User> {
     return this.http.put<User>(this.baseUrl, user);
   }
+  promoteUser(id: string, isAdmin: boolean): Observable<User> {
+    const url = `${this.baseUrl}/${id}`;
 
+    return this.http.put<User>(url,{isAdmin});
+  }
   deleteeUser(id: string): Observable<boolean> {
     const url = `${this.baseUrl}/${id}`;
 

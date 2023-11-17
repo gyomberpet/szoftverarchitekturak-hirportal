@@ -19,6 +19,7 @@ import { DeleteNewsComponent } from './components/delete-news/delete-news.compon
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateNewsComponent } from './components/create-news/create-news.component';
+import { UserTablePageComponent } from './components/user-table-page/user-table-page.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +27,8 @@ import { CreateNewsComponent } from './components/create-news/create-news.compon
     NavBarComponent,
     NewsDetailsPageComponent,
     DeleteNewsComponent,
-    CreateNewsComponent
+    CreateNewsComponent,
+    UserTablePageComponent
   ],
   imports: [
     //BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }), serverhez még importálni kell app.server.module
