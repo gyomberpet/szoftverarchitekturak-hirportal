@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NewsMainPageComponent } from './components/news-main-page/news-main-page.component';
 import { NewsDetailsPageComponent } from './components/news-details-page/news-details-page.component';
 import { CreateNewsComponent } from './components/create-news/create-news.component';
+import { LoginComponent } from './login/login.component';
 import { UserTablePageComponent } from './components/user-table-page/user-table-page.component';
 
 const routes: Routes = [
@@ -22,6 +23,10 @@ const routes: Routes = [
   },
   { path: '', redirectTo: '/users', pathMatch: 'full' },
   { path: 'users', component: UserTablePageComponent },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
 ];
 
 @NgModule({

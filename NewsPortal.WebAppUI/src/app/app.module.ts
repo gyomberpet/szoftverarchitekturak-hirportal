@@ -19,6 +19,7 @@ import { DeleteNewsComponent } from './components/delete-news/delete-news.compon
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateNewsComponent } from './components/create-news/create-news.component';
+import { LoginComponent } from './login/login.component';
 import { UserTablePageComponent } from './components/user-table-page/user-table-page.component';
 @NgModule({
   declarations: [
@@ -27,6 +28,8 @@ import { UserTablePageComponent } from './components/user-table-page/user-table-
     NavBarComponent,
     NewsDetailsPageComponent,
     DeleteNewsComponent,
+    CreateNewsComponent,
+    LoginComponent
     CreateNewsComponent,
     UserTablePageComponent
   ],
