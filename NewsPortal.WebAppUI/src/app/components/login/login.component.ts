@@ -50,8 +50,4 @@ export class LoginComponent {
     return form.value.userName != "" && form.value.emailAddress != "" && form.value.password != ""
   }
     
-
-  
-
-
 }
