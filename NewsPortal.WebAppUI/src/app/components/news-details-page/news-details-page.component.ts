@@ -29,12 +29,16 @@ export class NewsDetailsPageComponent implements OnInit {
     this.newsService.getNewsById(id).subscribe({
       next: (res: News) => {
         this.news = res;
-        this.newsService.getRandomNewsByCategory(this.news.category.name, 3).subscribe({
-          next: (res: News[]) => {
-            this.randomNewsList = res.filter(x => x.id !== this.news.id)
-          },
-          error: (err) => console.error(err),
-        });
+        if (this.news.category?.name) {
+          this.newsService.getRandomNewsByCategory(this.news.category.name, 3).subscribe({
+            next: (res: News[]) => {
+              this.randomNewsList = res.filter(x => x.id !== this.news.id);
+            },
+            error: (err) => console.error(err),
+          });
+        } else {
+          console.error('Category name is undefined');
+        }
       },
       error: (err) => console.error(err),
     });
@@ -44,6 +48,11 @@ export class NewsDetailsPageComponent implements OnInit {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['news', newsId]);
     });
+  }
+
+  edit() {
+    const newsId = this.news.id; // Assuming you have an 'id' property in your 'news' object
+    this.router.navigate(['news', newsId, 'edit']);
   }
 
   openDeleteModal(): void {

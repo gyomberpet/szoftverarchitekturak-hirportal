@@ -13,7 +13,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NewsDetailsPageComponent } from './components/news-details-page/news-details-page.component';
-
 import { NgbPaginationModule, NgbAlertModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteNewsComponent } from './components/delete-news/delete-news.component';import { NewsService } from './service/news.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -35,6 +34,9 @@ import { CreateNewsComponent } from './components/create-news/create-news.compon
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
     NgbPaginationModule, NgbAlertModule,
     AppRoutingModule,
     BrowserAnimationsModule,

@@ -17,7 +17,7 @@ const routes: Routes = [
   },
   {
     path: 'news/:id/edit',
-    component: NewsMainPageComponent,
+    component: CreateNewsComponent,
   },
 ];
 
