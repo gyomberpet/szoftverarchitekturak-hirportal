@@ -71,7 +71,7 @@
           <div class="card">
             <div *ngFor="let randomNews of randomNewsList" class="random-news-item" >
               <a  (click)="navigateToNews(randomNews.id?.toString())">
-                <img src="data:image/png;base64,{{ news.image?.data }}" alt="{{ randomNews.title }}" class="img-thumbnail" />
+                <img src="data:image/png;base64,{{ randomNews.image?.data }}" alt="{{ randomNews.title }}" class="img-thumbnail" />
                 <h3><strong>{{ randomNews.title }}</strong></h3>
               </a>
             </div>
