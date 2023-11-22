@@ -19,10 +19,11 @@ export class CreateNewsComponent implements OnInit {
   constructor(private newsService: NewsService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    const newsId = +this.route.snapshot.paramMap.get('id')!;
-
-    if (newsId) {
-      this.newsService.getNewsById(newsId).subscribe({
+    
+    const id = this.route.snapshot.paramMap.get('id')!;
+  
+    if (id) {
+      this.newsService.getNewsById(id).subscribe({
         next: (res: News) => {
           this.editingNews = res;
           this.news = { ...res };

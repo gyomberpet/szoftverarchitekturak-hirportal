@@ -53,17 +53,15 @@
       <article class="blog-post">
         <h2 class="blog-post-title">{{ news.subtitle }}</h2>
         <p class="blog-post-meta">{{ news.startDate | date:'yyyy-MM-dd' }}</p>
-        <hr>
+        <hr class="d-md-none"> <!-- Hide hr on screens larger than md -->
         <div class="news-description">
-          <p>{{ news.content }}</p>
+          <p class="text-break">{{ news.content }}</p>
         </div>
-        
       </article>
 
       <nav class="blog-pagination" aria-label="Pagination">
         <a class="btn btn-danger" (click)="openDeleteModal()" tabindex="-1" aria-disabled="true">Delete</a>
         <a class="btn btn-danger" (click)="edit()" tabindex="-1" aria-disabled="true">Edit</a>
-    
       </nav>
     </div>
 
@@ -72,14 +70,13 @@
         <div class="p-4 mb-3 bg-light rounded">
           <div class="card">
             <div *ngFor="let randomNews of randomNewsList" class="random-news-item" >
-              <a  (click)="navigateToNews(randomNews.id)">
+              <a  (click)="navigateToNews(randomNews.id?.toString())">
                 <img src="data:image/png;base64,{{ news.image?.data }}" alt="{{ randomNews.title }}" class="img-thumbnail" />
                 <h3><strong>{{ randomNews.title }}</strong></h3>
               </a>
             </div>
           </div>
         </div>
-
      </div>
     </div>
   </div>

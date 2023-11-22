@@ -50,14 +50,13 @@
 
           <div class="mb-3">
             <label for="content" class="form-label">Content</label>
-            <input
-              type="text"
+            <textarea
               class="form-control"
               [(ngModel)]="news.content"
               name="content"
               #contentInput="ngModel"
               [required]="true"
-            />
+            ></textarea>
             <span
               class="text-danger"
               *ngIf="(contentInput.touched || newsForm.submitted) && contentInput.errors?.['required']"

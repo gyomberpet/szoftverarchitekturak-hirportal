@@ -25,13 +25,14 @@ export class NewsDetailsPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const id = +this.route.snapshot.paramMap.get('id')!;
+    const id = this.route.snapshot.paramMap.get('id')!;
     this.newsService.getNewsById(id).subscribe({
       next: (res: News) => {
         this.news = res;
         if (this.news.category?.name) {
           this.newsService.getRandomNewsByCategory(this.news.category.name, 3).subscribe({
             next: (res: News[]) => {
+              // Assuming randomNewsList is an array of News objects
               this.randomNewsList = res.filter(x => x.id !== this.news.id);
             },
             error: (err) => console.error(err),
@@ -42,9 +43,9 @@ export class NewsDetailsPageComponent implements OnInit {
       },
       error: (err) => console.error(err),
     });
-    // Újratöltés ellenőrzése
+    // Check for reloading
   }
-  navigateToNews(newsId?: number): void {
+  navigateToNews(newsId?: string): void {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this.router.navigate(['news', newsId]);
     });
@@ -70,8 +71,8 @@ export class NewsDetailsPageComponent implements OnInit {
 
   deleteNews(): void {
     // Implement the delete logic here
-    const id = +this.route.snapshot.paramMap.get('id')!;
-    this.newsService.deleteeNews(id.toString()).subscribe({
+    const id = this.route.snapshot.paramMap.get('id')!;
+    this.newsService.deleteeNews(id).subscribe({
       next: (result) => {
         // Handle the result after successful deletion
         this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
