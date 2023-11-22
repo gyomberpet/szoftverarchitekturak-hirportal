@@ -13,7 +13,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NewsDetailsPageComponent } from './components/news-details-page/news-details-page.component';
-import { JwtModule } from '@auth0/angular-jwt'
+import { JwtModule } from '@auth0/angular-jwt';
 
 
 import { NgbPaginationModule, NgbAlertModule, NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -57,6 +57,9 @@ export function tokenGetter() {
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
+    NgbModule,
+    FormsModule,
+    ReactiveFormsModule,
     NgbPaginationModule, NgbAlertModule,
     AppRoutingModule,
     BrowserAnimationsModule,

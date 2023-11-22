@@ -22,7 +22,7 @@ const routes: Routes = [
   },
   {
     path: 'news/:id/edit',
-    component: NewsMainPageComponent,
+    component: CreateNewsComponent,
   },
   { path: '', redirectTo: '/users', pathMatch: 'full' },
   { path: 'users', component: UserTablePageComponent, canActivate: [AuthGuard, AdminGuard] },

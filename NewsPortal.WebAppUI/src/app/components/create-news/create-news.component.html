@@ -1,4 +1,105 @@
-<form (submit)="createNews()">
-    <input type="file" (change)="onFileSelected($event)">
-    <button type="submit">Upload Image</button>
-  </form>
+<div class="row">
+  <div class="col-md-6 mx-auto">
+    <div class="card">
+      <div class="card-header">
+        <h2 class="display-5">News</h2>
+      </div>
+      <div class="card-body">
+        <form
+          class="form"
+          #newsForm="ngForm"
+          (ngSubmit)="newsForm.form.valid && createOrUpdateNews()"
+          novalidate
+          autocomplete="off"
+        >
+          <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="news.title"
+              name="title"
+              #titleInput="ngModel"
+              [required]="true"
+            />
+            <span
+              class="text-danger"
+              *ngIf="(titleInput.touched || newsForm.submitted) && titleInput.errors?.['required']"
+            >
+              Title is required
+            </span>
+          </div>
+
+          <div class="mb-3">
+            <label for="subtitle" class="form-label">Subtitle</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="news.subtitle"
+              name="subtitle"
+              #subtitleInput="ngModel"
+              [required]="true"
+            />
+            <span
+              class="text-danger"
+              *ngIf="(subtitleInput.touched || newsForm.submitted) && subtitleInput.errors?.['required']"
+            >
+              Subtitle is required
+            </span>
+          </div>
+
+          <div class="mb-3">
+            <label for="content" class="form-label">Content</label>
+            <textarea
+              class="form-control"
+              [(ngModel)]="news.content"
+              name="content"
+              #contentInput="ngModel"
+              [required]="true"
+            ></textarea>
+            <span
+              class="text-danger"
+              *ngIf="(contentInput.touched || newsForm.submitted) && contentInput.errors?.['required']"
+            >
+              Content is required
+            </span>
+          </div>
+
+          <div class="mb-3">
+            <label for="endDate" class="form-label">End date</label>
+            <input
+              type="date"
+              class="form-control"
+              [(ngModel)]="news.endDate"
+              name="endDate"
+              #endDateInput="ngModel"
+              required
+            />
+            <span
+              class="text-danger"
+              *ngIf="(endDateInput.touched || newsForm.submitted) && endDateInput.errors?.['required']"
+            >
+              End date is required
+            </span>
+          </div>
+
+          <div class="mb-3">
+            <label class="custom-control-label" for="isTrending">Trending?</label>
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" [(ngModel)]="news.isTrending" name="isTrending">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <input type="file" (change)="onFileSelected($event)">
+            <button type="submit"  >{{ editingNews ? 'Update' : 'Create' }} News</button>
+          </div>
+          <div *ngIf="showAlert" class="alert alert-success" role="alert">
+  {{ editingNews ? 'Event successfully edited!' : 'Event successfully created!' }}
+  <button class="btn btn-primary" [routerLink]="['/']">Back</button>
+</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
