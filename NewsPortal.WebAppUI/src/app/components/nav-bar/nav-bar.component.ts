@@ -28,7 +28,7 @@ export class NavBarComponent {
       if (event.constructor.name === "NavigationEnd") {
         this.isLogged = this.auth.checkLogin();
         this.isNotLogged = !this.isLogged;
-        var user = this.getActualUser();
+        var user = this.auth.getLoggingUser();
         if(user.userName != null){
              this.userNameText = user.userName;
         }
@@ -43,24 +43,5 @@ export class NavBarComponent {
     localStorage.removeItem("jwt");
     this.router.navigate(["/login"]);
   }
-
-
-  private getActualUser(): User {
-    const token = localStorage.getItem("jwt");
-    var decodedToken = new decodedJwtToken();
-    var user : User = new User();
-    if(token)
-    {
-      try {
-        var decodedToken = jwtDecode<decodedJwtToken>(token);
-        user.userName = decodedToken.userName;
-        user.emailAddress = decodedToken.emailAdress;
-        user.isAdmin = decodedToken.IsAdmin == "True" ? true : false;
-      } catch(Error) {
-        return user;
-      }
-    }
-    return user;    
-   }
 
 }

@@ -19,5 +19,21 @@ export class AuthenticationService {
       }
       return false;
    }
-
+   getLoggingUser(): User {
+    const token = localStorage.getItem("jwt");
+    var decodedToken = new decodedJwtToken();
+    var user : User = new User();
+    if(token)
+    {
+      try {
+        var decodedToken = jwtDecode<decodedJwtToken>(token);
+        user.userName = decodedToken.userName;
+        user.emailAddress = decodedToken.emailAdress;
+        user.isAdmin = decodedToken.IsAdmin == "True" ? true : false;
+      } catch(Error) {
+        return user;
+      }
+    }
+    return user;    
+   }
 }

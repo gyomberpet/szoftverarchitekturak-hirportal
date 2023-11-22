@@ -55,7 +55,8 @@ namespace NewsPortal.WebAppApi.Controllers
 
 
 		[HttpPost]
-		public async Task<ActionResult<News>> AddNews([FromBody] News news)
+        [Authorize(Policy = "Admin")]
+        public async Task<ActionResult<News>> AddNews([FromBody] News news)
 		{
 			if (news == null) return BadRequest();
 
@@ -72,7 +73,8 @@ namespace NewsPortal.WebAppApi.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult<News>> UpdateNews([FromBody] News news)
+        [Authorize(Policy = "Admin")]
+        public async Task<ActionResult<News>> UpdateNews([FromBody] News news)
 		{
 			if (news == null) return BadRequest();
 
@@ -83,7 +85,9 @@ namespace NewsPortal.WebAppApi.Controllers
 
 		[Route("{id}")]
 		[HttpDelete]
-		public async Task<ActionResult<bool>> DeleteNews(string id)
+        [Authorize(Policy = "Admin")]
+
+        public async Task<ActionResult<bool>> DeleteNews(string id)
 		{
 			var news = await newsRepository.GetNews(id);
 

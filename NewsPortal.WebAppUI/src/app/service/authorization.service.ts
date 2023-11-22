@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { decodedJwtToken } from '../models/decodedJwtToken';
 import { jwtDecode } from 'jwt-decode';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -27,4 +28,5 @@ export class AuthorizationService {
     }
     return false;
   }
+
 }

@@ -15,6 +15,7 @@ const routes: Routes = [
   {
     path: 'news/create',
     component: CreateNewsComponent,
+    canActivate: [AdminGuard]
   },
   {
     path: 'news/:id',
@@ -23,9 +24,10 @@ const routes: Routes = [
   {
     path: 'news/:id/edit',
     component: CreateNewsComponent,
+    canActivate: [AdminGuard]
   },
   { path: '', redirectTo: '/users', pathMatch: 'full' },
-  { path: 'users', component: UserTablePageComponent, canActivate: [AuthGuard, AdminGuard] },
+  { path: 'users', component: UserTablePageComponent, canActivate: [AdminGuard] },
   {
     path: 'login',
     component: LoginComponent,

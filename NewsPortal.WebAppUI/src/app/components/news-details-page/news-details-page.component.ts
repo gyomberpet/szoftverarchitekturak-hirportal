@@ -5,6 +5,8 @@ import { NewsService } from 'src/app/service/news.service';
 import { DeleteNewsComponent } from '../delete-news/delete-news.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthorizationService } from 'src/app/service/authorization.service';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 
 @Component({
   selector: 'app-news-details-page',
@@ -14,17 +16,25 @@ import { MatDialog } from '@angular/material/dialog';
 export class NewsDetailsPageComponent implements OnInit {
   news: News = new News();
   randomNewsList: News[] = [];
+  isAdmin : Boolean = false;
   private reloadComponent: boolean = false; // Belső állapotváltozó
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private newsService: NewsService,
     private dialogRef: MatDialog,
-    private modalService: NgbModal
-    
+    private modalService: NgbModal,
+    private auth: AuthenticationService
   ) {}
 
   ngOnInit(): void {
+    
+    var user = this.auth.getLoggingUser();
+    if(user.isAdmin != undefined)
+    {
+      this.isAdmin = user.isAdmin;
+    }
     const id = this.route.snapshot.paramMap.get('id')!;
     this.newsService.getNewsById(id).subscribe({
       next: (res: News) => {
