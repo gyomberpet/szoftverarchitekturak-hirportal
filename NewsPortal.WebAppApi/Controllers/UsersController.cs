@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using NewsPortal.WebAppApi.Data;
@@ -8,6 +9,7 @@ using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Xml.Linq;
 
 namespace NewsPortal.WebAppApi.Controllers
 {
@@ -35,8 +37,8 @@ namespace NewsPortal.WebAppApi.Controllers
 
 			return Ok(user);
 		}
-
-		[HttpGet]
+        [Authorize(Policy = "Admin")]
+        [HttpGet]
 		public async Task<ActionResult<IEnumerable<User>>> GetAllUser()
 		{
 			var users = await usersRepository.ListUsers();
@@ -114,7 +116,7 @@ namespace NewsPortal.WebAppApi.Controllers
 				return Unauthorized();
 			}
 
-			var tokenString = CreatingToken();
+			var tokenString = CreatingToken(user);
 
 			return Ok(new { Token = tokenString });
 		}
@@ -135,10 +137,11 @@ namespace NewsPortal.WebAppApi.Controllers
 					UserName = loginInfo.UserName,
 					EmailAddress = loginInfo.EmailAddress,
 					Password = loginInfo.Password,
+					IsAdmin = false
 				};
 
                 await usersRepository.AddUser(user);
-                var tokenString = CreatingToken();
+                var tokenString = CreatingToken(user);
                 return Ok(new { Token = tokenString });
             }
             catch (Exception)
@@ -146,20 +149,25 @@ namespace NewsPortal.WebAppApi.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
 			}
 		}
-        private string CreatingToken()
+        private string CreatingToken(User user)
         {
 			var tokenSettings = configuration.GetSection("Token");
 			SymmetricSecurityKey secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
             SigningCredentials signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-
+			List<Claim> claims = new List<Claim>()
+			{
+				new Claim(nameof(user.IsAdmin),user.IsAdmin.ToString())
+			};
             JwtSecurityToken tokeOptions = new JwtSecurityToken(
                     issuer: tokenSettings["ValidIssuer"],
 					audience: tokenSettings["ValidAudience"],
-					claims: new List<Claim>(),
+
+					claims: claims,
                     expires: DateTime.Now.AddDays(1),
                     signingCredentials: signingCredentials
                 );
-
+			tokeOptions.Payload["userName"] = user.UserName;
+			tokeOptions.Payload["emailAdress"] = user.EmailAddress;
             return new JwtSecurityTokenHandler().WriteToken(tokeOptions);
         }
     }
