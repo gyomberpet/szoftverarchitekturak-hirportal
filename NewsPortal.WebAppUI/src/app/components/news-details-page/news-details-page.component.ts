@@ -56,7 +56,7 @@ export class NewsDetailsPageComponent implements OnInit {
     // Check for reloading
   }
   navigateToNews(newsId?: string): void {
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    this.router.navigateByUrl('/').then(() => {
       this.router.navigate(['news', newsId]);
     });
   }
