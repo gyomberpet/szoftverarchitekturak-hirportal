@@ -92,7 +92,12 @@
 
           <div class="mb-3">
             <input type="file" (change)="onFileSelected($event)">
-            <button type="submit"  >{{ editingNews ? 'Update' : 'Create' }} News</button>
+            <button type="submit" >{{ editingNews ? 'Update' : 'Create' }} News</button>
+
+            <!-- Display a message if the file is required and not selected -->
+            <div *ngIf="!selectedFile && (newsForm.submitted || showAlert)" class="text-danger">
+              File is required
+            </div>
           </div>
           <div *ngIf="showAlert" class="alert alert-success" role="alert">
   {{ editingNews ? 'Event successfully edited!' : 'Event successfully created!' }}
