@@ -1,23 +1,21 @@
-<!-- user-list.component.html -->
-
 <table>
     <thead>
       <tr>
-        <th>ID</th>
+        <th>#</th>
         <th>Name</th>
         <th>Email</th>
-        <th>isAdmin</th>
+        <th>Admin</th>
         <th>Change</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of users">
-        <td>{{ user.id }}</td>
+      <tr *ngFor="let user of users, let i = index">
+        <td>{{ i+1}}</td>
         <td>{{ user.userName }}</td>
         <td>{{ user.emailAddress }}</td>
         <td>{{ user.isAdmin ? 'Yes' : 'No' }}</td>
         <td>
-          <button (click)="promoteUser(user)">Change</button>
+          <button (click)="promoteUser(user)">Promote</button>
         </td>
       </tr>
     </tbody>

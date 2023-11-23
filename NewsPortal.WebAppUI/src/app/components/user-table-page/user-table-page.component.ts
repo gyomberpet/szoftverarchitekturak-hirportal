@@ -20,8 +20,12 @@ export class UserTablePageComponent implements OnInit {
   }
 
   promoteUser(user: User): void {
-    this.usersService.promoteUser(user.id, !user.isAdmin).subscribe(promotedUser => {
-      user.isAdmin = promotedUser.isAdmin;
-    });
+    this.usersService.promoteUser(user.id).subscribe(
+      (promotedUser) => {
+        if (!user.isAdmin) {
+          user.isAdmin = true;
+        }
+      }
+    );
   }
 }
