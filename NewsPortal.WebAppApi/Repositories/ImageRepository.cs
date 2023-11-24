@@ -26,5 +26,20 @@ namespace NewsPortal.WebAppApi.Repositories
 
 			return image;
 		}
+
+		public async Task<bool> DeleteImage(string id)
+		{
+			var image = await context.News.FindAsync(id);
+
+			if (image == null)
+			{
+				return false;
+			}
+
+			context.News.Remove(image);
+			await context.SaveChangesAsync();
+
+			return true;
+		}
 	}
 }

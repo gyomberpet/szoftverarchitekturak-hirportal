@@ -15,12 +15,15 @@ namespace NewsPortal.WebAppApi.Controllers
 		private readonly ILogger<NewsController> logger;
 		private readonly INewsRepository newsRepository;
 		private readonly IImageRepository imageRepository;
+		private readonly ICategoriesRepository categoriesRepository;
 
-		public NewsController(ILogger<NewsController> logger, INewsRepository newsRepository, IImageRepository imageRepository)
+		public NewsController(ILogger<NewsController> logger, INewsRepository newsRepository, 
+			IImageRepository imageRepository, ICategoriesRepository categoriesRepository)
 		{
 			this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			this.newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
 			this.imageRepository = imageRepository ?? throw new ArgumentNullException(nameof(imageRepository));
+			this.categoriesRepository = categoriesRepository ?? throw new ArgumentNullException(nameof(categoriesRepository));
 		}
 
 		[Route("{id}")]
@@ -59,15 +62,15 @@ namespace NewsPortal.WebAppApi.Controllers
 		[HttpPost]
 		public async Task<ActionResult<News>> AddNews([FromBody] News news)
 		{
-			if (news == null) return BadRequest();
+			if (news?.Category?.Name == null || news.Image == null) return BadRequest();
 
-			if(news.Image != null) 
-			{
-				var uploadedImage = await imageRepository.UploadImage(news.Image);
+			var category = await categoriesRepository.GetCategoryByName(news.Category.Name);
 
-				news.ImageId = uploadedImage.Id;
-			}
-			
+			if (category == null) return BadRequest();
+
+			var uploadedImage = await imageRepository.UploadImage(news.Image);
+			news.ImageId = uploadedImage.Id;
+
 			var created = await newsRepository.AddNews(news);
 
 			return Ok(created);
@@ -93,13 +96,15 @@ namespace NewsPortal.WebAppApi.Controllers
 			{
 				return NotFound();
 			}
-
+			
 			var isSuccess = await newsRepository.DeleteNews(id);
 
 			if (!isSuccess)
 			{
 				return NotFound();
 			}
+
+			await imageRepository.DeleteImage(news.ImageId);
 
 			return NoContent();
 		}
