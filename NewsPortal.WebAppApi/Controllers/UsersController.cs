@@ -61,7 +61,8 @@ namespace NewsPortal.WebAppApi.Controllers
 			return Ok(user);
 		}
 
-		[HttpPut]
+        [Authorize(Policy = "Admin")]
+        [HttpPut]
 		public async Task<ActionResult<User>> UpdateUser([FromBody] User user)
 		{
 			if (user == null) return BadRequest();
@@ -78,7 +79,8 @@ namespace NewsPortal.WebAppApi.Controllers
 			return Ok(updated);
 		}
 
-		[HttpDelete]
+        [Authorize(Policy = "Admin")]
+        [HttpDelete]
 		[Route("{id}")]
 		public async Task<ActionResult> DeleteUser(string id)
 		{
