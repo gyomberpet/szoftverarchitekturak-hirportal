@@ -44,6 +44,10 @@ namespace NewsPortal.WebAppApi.Data
 				.Navigation(x => x.Image)
 				.UsePropertyAccessMode(PropertyAccessMode.Property);
 
+			modelBuilder.Entity<NewsCategory>()
+				.HasIndex(u => u.Name)
+				.IsUnique();
+
 
 			modelBuilder.Entity<User>().HasData(
 				new User { Id = "1", UserName = "gipszjakab", EmailAddress = "admin@kft.hu", Password = "1234", IsAdmin = true },

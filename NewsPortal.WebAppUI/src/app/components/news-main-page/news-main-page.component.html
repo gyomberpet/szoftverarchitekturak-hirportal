@@ -1,5 +1,10 @@
 <a class="btn btn-primary" href="news/create">Create news</a>
 
+<div class="mb-3" style="padding-top: 10px;">
+  <label for="search" class="form-label">Search</label>
+  <input type="text" class="form-control" aria-describedby="search" #search>
+</div>
+
 <div class="card-container">
   <div *ngFor="let news of newsList">
     <a routerLink="{{news.id}}">

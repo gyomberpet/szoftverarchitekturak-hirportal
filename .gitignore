@@ -398,3 +398,4 @@ FodyWeavers.xsd
 *.sln.iml
 /NewsPortal.WebAppApi/Data/DataContext.cs
 /NewsPortal.WebAppApi/Data/DataContext.cs
+/NewsPortal.WebAppUI

@@ -14,15 +14,19 @@ export class NewsService {
   baseUrl: string = `${baseUrl}/news`;
 
   getNews(requestParams: NewsRequestParams): Observable<News[]> {
-    let params = new HttpParams()
-      .set('includeImage', requestParams.includeImage);
-    if(requestParams.categoryName)
-      params.set('categoryName', requestParams.categoryName);
-    if(requestParams.categoryName)
-      params.set('pageIndex', requestParams.pageIndex ?? '');
-    if(requestParams.categoryName)
-      params.set('pageSize', requestParams.pageSize ?? '');
-
+    let params = new HttpParams().set(
+      'includeImage',
+      requestParams.includeImage
+    );
+    if (requestParams.categoryName)
+      params = params.append('categoryName', requestParams.categoryName);
+    if (requestParams.searchText)
+      params = params.append('searchText', requestParams.searchText);
+    if (requestParams.categoryName)
+      params =params.append('pageIndex', requestParams.pageIndex ?? '');
+    if (requestParams.categoryName)
+      params =params.append('pageSize', requestParams.pageSize ?? '');
+    
     return this.http.get<News[]>(this.baseUrl, { params: params });
   }
 

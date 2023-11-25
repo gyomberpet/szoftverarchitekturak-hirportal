@@ -18,3 +18,7 @@ a {
 .title {
     font-size: x-large;
 }
+
+input {
+  width: 30vw;
+}
