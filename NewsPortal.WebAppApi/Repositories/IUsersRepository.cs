@@ -10,6 +10,7 @@ namespace NewsPortal.WebAppApi.Repositories
 		public Task<User> AddUser(User user);
         public Task<User> UpdateUser(User user);
         public Task<bool> DeleteUser(string id);
+        public Task<User> PromoteUser(string id);
 
     }
 }

@@ -57,7 +57,9 @@ namespace NewsPortal.WebAppApi.Controllers
 
 
 		[HttpPost]
-		public async Task<ActionResult<News>> AddNews([FromBody] News news)
+        [AllowAnonymous]
+
+        public async Task<ActionResult<News>> AddNews([FromBody] News news)
 		{
 			if (news == null) return BadRequest();
 

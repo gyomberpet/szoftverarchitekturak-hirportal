@@ -53,6 +53,19 @@ namespace NewsPortal.WebAppApi.Repositories
 
             return user;
         }
+        public async Task<User> PromoteUser(string id)
+        {
+            var user = await context.Users.FindAsync(id);
+
+            if (user == null) return user;
+
+            user.IsAdmin = !user.IsAdmin;
+
+            context.Users.Update(user);
+            await context.SaveChangesAsync();
+
+            return user;
+        }
         public async Task<bool> DeleteUser(string id)
         {
             var user = await context.Users.FindAsync(id);
