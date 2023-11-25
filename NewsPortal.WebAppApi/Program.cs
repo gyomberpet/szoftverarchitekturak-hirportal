@@ -7,6 +7,7 @@ using System.Text;
 using NewsPortal.WebAppApi.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Authentication.ExtendedProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
+    
     var clientAppUrl = builder.Configuration.GetValue<string>("ClientAppUrl");
 
 	options.AddPolicy("AllowOrigin", builder =>
@@ -47,7 +49,7 @@ builder.Services.AddAuthentication(
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-
+              
                 ValidIssuer = tokenSettings["ValidIssuer"],
                 ValidAudience = tokenSettings["ValidAudience"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
@@ -55,6 +57,14 @@ builder.Services.AddAuthentication(
             };
         }
     );
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy =>
+    {
+        policy.RequireClaim("IsAdmin", "True");
+    });
+});
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
