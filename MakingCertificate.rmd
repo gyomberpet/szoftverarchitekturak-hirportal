@@ -1,0 +1,42 @@
+# 1.lépés
+## Csinálj egy certificate.cnf fájlt az alábbi tartalommal:
+
+[req]
+default_bits = 2048
+prompt = no
+default_md = sha256
+x509_extensions = v3_req
+distinguished_name = dn
+[dn]
+C = GB
+ST = London
+L = London
+O = My Organisation
+OU = My Organisational Unit
+emailAddress = email@domain.com
+CN = localhost
+[v3_req]
+subjectAltName = @alt_names
+[alt_names]
+DNS.1 = localhost
+
+# 2.lépés
+## Git Bash-on csinálj egy localhost.crt, és egy localhost.key fájlt (olyan útvonalon keresztül legyen a parancssol, amivel el tudja érni a fenti fájlt!!!)
+
+openssl req -new -x509 -newkey rsa:2048 -sha256 -nodes -keyout localhost.key -days 3560 -out localhost.crt -config certificate.cnf
+
+
+# 3.lépés
+## window keresőb -> mmc 
+## Fájl -> Beépülő modul hozzáadása
+## Add hozzá a Tanusítványok modult, és OK
+## Tanúsítványok - aktuálus felhasználó -> Megbízható legfelső szintű hitelesítésszolgáltatók
+## Jobb gombbal kattinsd a fentire
+## Összes feladat -> Importálás
+## Tallózd be a saját localhost.crt fájlt a  Megbízható legfelső szintű hitelesítésszolgáltatók részére
+
+# 4.lépés
+## A localhost.crt és localhost.key fájlt rakd át az appodba (app/[IDE], ahol az angular.json is van)
+
+# 5.lépés
+#Happy end with HTTPS, comrade

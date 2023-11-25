@@ -3,13 +3,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 using NewsPortal.WebAppApi.Models;
 using NewsPortal.WebAppApi.Repositories;
+using System.Security.Claims;
 
 namespace NewsPortal.WebAppApi.Controllers
 {
 	[ApiController]
-	[Route("api/v1/news")]
-	//[Authorize]
-	public class NewsController : ControllerBase
+    [Route("api/v1/news")]
+    [Authorize]
+
+    public class NewsController : ControllerBase
 	{
 
 		private readonly ILogger<NewsController> logger;
@@ -25,7 +27,6 @@ namespace NewsPortal.WebAppApi.Controllers
 
 		[Route("{id}")]
 		[HttpGet]
-		[AllowAnonymous]
 		public async Task<ActionResult<News>> GetNews(string id)
 		{
 			var news = await newsRepository.GetNews(id);
@@ -35,9 +36,7 @@ namespace NewsPortal.WebAppApi.Controllers
 
 			return Ok(news);
 		}
-
-		[HttpGet]
-		[AllowAnonymous]
+        [HttpGet]
 		public async Task<ActionResult<IEnumerable<News>>> GetAllNews([FromQuery] NewsRequestParams param)
 		{
 			var newsList = await newsRepository.ListNews(param);
@@ -47,7 +46,6 @@ namespace NewsPortal.WebAppApi.Controllers
 
 		[HttpGet]
 		[Route("random/{category}/{amount}")]
-		[AllowAnonymous]
 		public async Task<ActionResult<IEnumerable<News>>> GetRandomNewsByCategory(string category, int amount)
 		{
 			var newsList = await newsRepository.GetRandomNewsByCategory(category, amount);
@@ -57,7 +55,8 @@ namespace NewsPortal.WebAppApi.Controllers
 
 
 		[HttpPost]
-		public async Task<ActionResult<News>> AddNews([FromBody] News news)
+        [Authorize(Policy = "Admin")]
+        public async Task<ActionResult<News>> AddNews([FromBody] News news)
 		{
 			if (news == null) return BadRequest();
 
@@ -74,7 +73,8 @@ namespace NewsPortal.WebAppApi.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult<News>> UpdateNews([FromBody] News news)
+        [Authorize(Policy = "Admin")]
+        public async Task<ActionResult<News>> UpdateNews([FromBody] News news)
 		{
 			if (news == null) return BadRequest();
 
@@ -85,7 +85,9 @@ namespace NewsPortal.WebAppApi.Controllers
 
 		[Route("{id}")]
 		[HttpDelete]
-		public async Task<ActionResult<bool>> DeleteNews(string id)
+        [Authorize(Policy = "Admin")]
+
+        public async Task<ActionResult<bool>> DeleteNews(string id)
 		{
 			var news = await newsRepository.GetNews(id);
 

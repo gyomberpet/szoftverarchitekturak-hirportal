@@ -1,11 +1,14 @@
 <p>
   <mat-toolbar color="primary">
-    <span>News</span>
+    <span routerLink="/news">News</span>
     <span class="spacer"></span>
     <div style="font-size: medium">
-      <button mat-button [matMenuTriggerFor]="menu">Test User</button>
+      <button *ngIf="isNotLogged" mat-button routerLink="/login">Login</button>
+      <button *ngIf="isNotLogged" mat-button routerLink="/register">Register</button>
+      <button *ngIf="isLogged" id ="userMenu" mat-button [matMenuTriggerFor]="menu">{{ userNameText }}</button>
       <mat-menu #menu="matMenu">
         <button mat-menu-item (click)="signOut()">Sign out</button>
+        <button *ngIf="isAdminUser" mat-menu-item routerLink="/users">Edit users</button>
       </mat-menu>
     </div>
   </mat-toolbar>
