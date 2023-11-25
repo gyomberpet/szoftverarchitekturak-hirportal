@@ -21,6 +21,12 @@ namespace NewsPortal.WebAppApi.Repositories
 			if (!string.IsNullOrWhiteSpace(param.CategoryName))
 				query = query.Where(n => n.Category.Name == param.CategoryName);
 
+			if (!string.IsNullOrWhiteSpace(param.SearchText))
+				query = query.Where(n => 
+					n.Title.Contains(param.SearchText) ||
+					n.Subtitle.Contains(param.SearchText) ||
+					n.Category.Name.Contains(param.SearchText));
+
 			if (param.IncludeImage)
 				query = query.Include(n => n.Image);
 

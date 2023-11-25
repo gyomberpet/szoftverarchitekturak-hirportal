@@ -7,5 +7,7 @@ namespace NewsPortal.WebAppApi.Repositories
 		public Task<Image> UploadImage(Image image);
 
 		public Task<Image> GetImage(string id);
+
+		public Task<bool> DeleteImage(string id);
 	}
 }
