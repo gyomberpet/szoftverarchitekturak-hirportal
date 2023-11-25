@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { News } from 'src/app/models/news';
 import { NewsService } from 'src/app/service/news.service';
+import { NewsCategoryService } from 'src/app/service/news-category.service';
+import { NewsCategory } from 'src/app/models/newsCategory';
 
 const NEWS_EXPIRATION_IN_DAYS = 14;
 
@@ -13,9 +15,49 @@ const NEWS_EXPIRATION_IN_DAYS = 14;
 export class CreateNewsComponent {
   selectedFile: File | null;
 
+<<<<<<< Updated upstream
   constructor(private newsService: NewsService) {}
 
   onFileSelected(event: any) {
+=======
+  constructor(private newsService: NewsService, private route: ActivatedRoute, private newsCategoryService: NewsCategoryService) {}
+
+  categories: NewsCategory[] = [];
+
+  selectedCategory: NewsCategory;
+  addingNewCategory = false;
+  newCategory: NewsCategory;
+
+  ngOnInit(): void {
+    
+    this.loadCategories();
+    const id = this.route.snapshot.paramMap.get('id')!;
+  
+    if (id) {
+      this.newsService.getNewsById(id).subscribe({
+        next: (res: News) => {
+          this.editingNews = res;
+          this.news = { ...res };
+          this.news.endDate = this.news.endDate.split('T')[0]; // Format endDate for the date input
+        },
+        error: (err) => console.error(err),
+      });
+    }
+  }
+
+  loadCategories() {
+    this.newsCategoryService.getCategories().subscribe(
+      (data) => {
+        this.categories = data;
+      },
+      (error) => {
+        console.error('Error fetching categories:', error);
+      }
+    );
+  }
+
+  onFileSelected(event: any): void {
+>>>>>>> Stashed changes
     this.selectedFile = event.target.files[0] as File;
   }
 
