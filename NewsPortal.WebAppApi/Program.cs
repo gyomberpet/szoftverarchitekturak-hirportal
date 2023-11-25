@@ -8,7 +8,6 @@ using NewsPortal.WebAppApi.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Authentication.ExtendedProtection;
-using NewsPortal.WebAppApi;
 
 var builder = WebApplication.CreateBuilder(args);
 

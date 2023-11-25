@@ -50,7 +50,6 @@ export function tokenGetter() {
         disallowedRoutes: []
       }
     }),
-    //BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }), serverhez még importálni kell app.server.module
     NgbModule,
     HttpClientModule,
     FormsModule,

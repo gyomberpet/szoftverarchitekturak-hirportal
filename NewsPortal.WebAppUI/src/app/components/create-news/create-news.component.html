@@ -48,6 +48,22 @@
             </span>
           </div>
 
+          <div>
+            <label for="subtitle" class="form-label">Category</label>
+            <select
+              name="category"
+              [(ngModel)]="selectedCategoryId"
+              class="form-select"
+            >
+              <option
+                *ngFor="let category of categories"
+                [value]="category.id"
+              >
+                {{ category.name }}
+              </option>
+            </select>
+          </div>
+
           <div class="mb-3">
             <label for="content" class="form-label">Content</label>
             <textarea
@@ -84,25 +100,41 @@
           </div>
 
           <div class="mb-3">
-            <label class="custom-control-label" for="isTrending">Trending?</label>
+            <label class="custom-control-label" for="isTrending"
+              >Trending?</label
+            >
             <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" [(ngModel)]="news.isTrending" name="isTrending">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                [(ngModel)]="news.isTrending"
+                name="isTrending"
+              />
             </div>
           </div>
 
           <div class="mb-3">
-            <input type="file" (change)="onFileSelected($event)">
-            <button type="submit" >{{ editingNews ? 'Update' : 'Create' }} News</button>
+            <input type="file" (change)="onFileSelected($event)" />
+            <button type="submit">
+              {{ editingNews ? "Update" : "Create" }} News
+            </button>
 
             <!-- Display a message if the file is required and not selected -->
-            <div *ngIf="!selectedFile && (newsForm.submitted || showAlert)" class="text-danger">
+            <div
+              *ngIf="!selectedFile && (newsForm.submitted || showAlert)"
+              class="text-danger"
+            >
               File is required
             </div>
           </div>
           <div *ngIf="showAlert" class="alert alert-success" role="alert">
-  {{ editingNews ? 'Event successfully edited!' : 'Event successfully created!' }}
-  <button class="btn btn-primary" [routerLink]="['/']">Back</button>
-</div>
+            {{
+              editingNews
+                ? "Event successfully edited!"
+                : "Event successfully created!"
+            }}
+            <button class="btn btn-primary" [routerLink]="['/']">Back</button>
+          </div>
         </form>
       </div>
     </div>

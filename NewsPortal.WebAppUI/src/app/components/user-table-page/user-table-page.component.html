@@ -15,7 +15,7 @@
         <td>{{ user.emailAddress }}</td>
         <td>{{ user.isAdmin ? 'Yes' : 'No' }}</td>
         <td>
-          <button (click)="promoteUser(user)">Promote</button>
+          <button *ngIf="!user.isAdmin" (click)="promoteUser(user)">Promote</button>
         </td>
       </tr>
     </tbody>

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, ReplaySubject } from 'rxjs';
 import { News } from 'src/app/models/news';
@@ -6,6 +6,7 @@ import { NewsRequestParams } from 'src/app/models/newsRequestParams';
 import { NewsService } from 'src/app/service/news.service';
 import { NewsCategoryService } from 'src/app/service/news-category.service';
 import { NewsCategory } from 'src/app/models/newsCategory';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-create-news',
@@ -14,33 +15,27 @@ import { NewsCategory } from 'src/app/models/newsCategory';
 })
 export class CreateNewsComponent implements OnInit {
   @Input() editingNews: News | null = null;
+  
   selectedFile: File | null;
   news: News = {} as News;
   showAlert: boolean = false;
 
-    constructor(private newsService: NewsService, private route: ActivatedRoute, private newsCategoryService: NewsCategoryService) { }
-
-    categories: NewsCategory[] = [];
-
-    selectedCategory: NewsCategory;
-    addingNewCategory = false;
-    newCategory: NewsCategory;
-
-  onFileSelected(event: any) {
-
-  constructor(private newsService: NewsService, private route: ActivatedRoute, private newsCategoryService: NewsCategoryService) {}
+  constructor(
+    private newsService: NewsService,
+    private route: ActivatedRoute,
+    private newsCategoryService: NewsCategoryService
+  ) {}
 
   categories: NewsCategory[] = [];
 
-  selectedCategory: NewsCategory;
+  selectedCategoryId: number;
   addingNewCategory = false;
   newCategory: NewsCategory;
 
   ngOnInit(): void {
-    
     this.loadCategories();
     const id = this.route.snapshot.paramMap.get('id')!;
-  
+
     if (id) {
       this.newsService.getNewsById(id).subscribe({
         next: (res: News) => {
@@ -54,14 +49,13 @@ export class CreateNewsComponent implements OnInit {
   }
 
   loadCategories() {
-    this.newsCategoryService.getCategories().subscribe(
-      (data) => {
-        this.categories = data;
+    this.newsCategoryService.getCategories().subscribe({
+      next: res => {
+        this.categories = res;
+        console.log(res)
       },
-      (error) => {
-        console.error('Error fetching categories:', error);
-      }
-    );
+      error: err => console.error(err)
+    })
   }
 
   onFileSelected(event: any): void {
@@ -76,13 +70,16 @@ export class CreateNewsComponent implements OnInit {
     this.encodeImageToBase64(this.selectedFile).subscribe({
       next: (res) => {
         const base64image = res;
-
+        console.log(this.selectedCategoryId)
         this.news = {
           ...this.news,
+          category: {
+            id: this.selectedCategoryId
+          },
           startDate: new Date().toISOString(),
           image: { data: base64image },
         };
-
+        console.log(this.news)
         const newsObservable = this.editingNews
           ? this.newsService.updateNews(this.news)
           : this.newsService.createNews(this.news);
