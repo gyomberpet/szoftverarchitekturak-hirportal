@@ -1,25 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, ReplaySubject } from 'rxjs';
 import { News } from 'src/app/models/news';
+import { NewsRequestParams } from 'src/app/models/newsRequestParams';
 import { NewsService } from 'src/app/service/news.service';
 import { NewsCategoryService } from 'src/app/service/news-category.service';
 import { NewsCategory } from 'src/app/models/newsCategory';
-
-const NEWS_EXPIRATION_IN_DAYS = 14;
 
 @Component({
   selector: 'app-create-news',
   templateUrl: './create-news.component.html',
   styleUrls: ['./create-news.component.css'],
 })
-export class CreateNewsComponent {
+export class CreateNewsComponent implements OnInit {
+  @Input() editingNews: News | null = null;
   selectedFile: File | null;
+  news: News = {} as News;
+  showAlert: boolean = false;
 
-<<<<<<< Updated upstream
-  constructor(private newsService: NewsService) {}
+    constructor(private newsService: NewsService, private route: ActivatedRoute, private newsCategoryService: NewsCategoryService) { }
+
+    categories: NewsCategory[] = [];
+
+    selectedCategory: NewsCategory;
+    addingNewCategory = false;
+    newCategory: NewsCategory;
 
   onFileSelected(event: any) {
-=======
+
   constructor(private newsService: NewsService, private route: ActivatedRoute, private newsCategoryService: NewsCategoryService) {}
 
   categories: NewsCategory[] = [];
@@ -57,40 +65,36 @@ export class CreateNewsComponent {
   }
 
   onFileSelected(event: any): void {
->>>>>>> Stashed changes
     this.selectedFile = event.target.files[0] as File;
   }
 
-  createNews() {
-    if (!this.selectedFile) return;
+  createOrUpdateNews(): void {
+    if (!this.selectedFile) {
+      return;
+    }
 
     this.encodeImageToBase64(this.selectedFile).subscribe({
       next: (res) => {
-        let base64image = res;
+        const base64image = res;
 
-        let currentDate = new Date();
-        let expirationDate = new Date(
-          currentDate.setDate(currentDate.getDate() + NEWS_EXPIRATION_IN_DAYS)
-        );
-        let news: News = {
-      
-          title: 'teszt',
-          subtitle: 'sub teszt',
-          category: {
-            name: 'tt',
-          },
-          content: 'piuasdhhfwaipefwuqefwwefuqwef',
-          startDate: currentDate.toISOString(),
-          endDate: expirationDate.toISOString(),
-          isTrending: true,
-          image: {
-            data: base64image,
-          },
-        } as News;
+        this.news = {
+          ...this.news,
+          startDate: new Date().toISOString(),
+          image: { data: base64image },
+        };
 
-        this.newsService.createNews(news).subscribe({
-          next: (res) => console.log(res),
-          error: (err) => console.error(),
+        const newsObservable = this.editingNews
+          ? this.newsService.updateNews(this.news)
+          : this.newsService.createNews(this.news);
+
+        newsObservable.subscribe({
+          next: (res) => {
+            console.log(res);
+            this.showAlert = true;
+          },
+          error: (err) => {
+            console.error(err);
+          },
         });
       },
       error: (err) => console.error(err),
@@ -100,9 +104,12 @@ export class CreateNewsComponent {
   encodeImageToBase64(file: File): Observable<string> {
     const result = new ReplaySubject<string>(1);
     const reader = new FileReader();
-    reader.readAsBinaryString(file);
+
     reader.onload = (event) =>
-      result.next(btoa(event?.target?.result?.toString() ?? ''));
+      result.next(btoa(event?.target?.result?.toString() || ''));
+
+    reader.readAsBinaryString(file);
+
     return result;
   }
 }
