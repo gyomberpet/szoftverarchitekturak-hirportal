@@ -39,7 +39,8 @@ export function tokenGetter() {
     DeleteNewsComponent,
     CreateNewsComponent,
     LoginComponent,
-    UserTablePageComponent
+    UserTablePageComponent,
+    RegisterComponent
   ],
   imports: [
     JwtModule.forRoot({

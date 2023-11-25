@@ -1,6 +1,12 @@
 <form class="form-register" #registerForm="ngForm" (ngSubmit) = "register(registerForm)">
     <div class="container-fluid">
         <h2 class="form-register-heading">Register</h2>
+        <div *ngIf="invalidRegister" class="alert alert-danger">
+            Unsuccessful register
+        </div> 
+        <div *ngIf="isEmpty" class="alert alert-danger">
+            Fill this!
+        </div>
         <br>
         <label for="userName" class="sr-only">Username</label>
         <input type="text" id="userName" name="userName" ngModel class="form-control" placeholder="User Name" required autofocus>
