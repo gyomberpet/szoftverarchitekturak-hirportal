@@ -7,7 +7,7 @@ namespace NewsPortal.WebAppApi.Controllers
 {
     [Route("api/v1/newscategories")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class NewsCategoriesController : ControllerBase
     {
         private readonly INewsCategoriesRepository newsCategoriesRepository;
@@ -28,19 +28,14 @@ namespace NewsPortal.WebAppApi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<NewsCategory>> AddNewsCategory([FromBody] NewsCategory newsCategory)
+        public async Task<ActionResult<NewsCategory>> AddNewsCategory([FromBody] NewsCategory category)
         {
-            if (newsCategory == null)
+            if (category == null || string.IsNullOrWhiteSpace(category.Name))
             {
                 return BadRequest();
             }
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var created = await newsCategoriesRepository.AddNewsCategory(newsCategory);
+            var created = await newsCategoriesRepository.AddNewsCategory(category);
 
             return Ok(created);
         }

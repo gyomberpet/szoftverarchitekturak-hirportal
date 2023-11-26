@@ -15,7 +15,7 @@ import { FormControl } from '@angular/forms';
 })
 export class CreateNewsComponent implements OnInit {
   @Input() editingNews: News | null = null;
-  
+
   selectedFile: File | null;
   news: News = {} as News;
   showAlert: boolean = false;
@@ -28,9 +28,9 @@ export class CreateNewsComponent implements OnInit {
 
   categories: NewsCategory[] = [];
 
-  selectedCategoryId: number;
+  selectedCategoryName: string;
   addingNewCategory = false;
-  newCategory: NewsCategory;
+  newCategoryName: string;
 
   ngOnInit(): void {
     this.loadCategories();
@@ -42,6 +42,7 @@ export class CreateNewsComponent implements OnInit {
           this.editingNews = res;
           this.news = { ...res };
           this.news.endDate = this.news.endDate.split('T')[0]; // Format endDate for the date input
+          this.selectedCategoryName = res.category.name ?? '';
         },
         error: (err) => console.error(err),
       });
@@ -50,12 +51,12 @@ export class CreateNewsComponent implements OnInit {
 
   loadCategories() {
     this.newsCategoryService.getCategories().subscribe({
-      next: res => {
+      next: (res) => {
         this.categories = res;
-        console.log(res)
+        console.log(res);
       },
-      error: err => console.error(err)
-    })
+      error: (err) => console.error(err),
+    });
   }
 
   onFileSelected(event: any): void {
@@ -63,39 +64,61 @@ export class CreateNewsComponent implements OnInit {
   }
 
   createOrUpdateNews(): void {
-    if (!this.selectedFile) {
+    if (!this.editingNews && !this.selectedFile) {
       return;
     }
 
-    this.encodeImageToBase64(this.selectedFile).subscribe({
-      next: (res) => {
-        const base64image = res;
-        console.log(this.selectedCategoryId)
-        this.news = {
-          ...this.news,
-          category: {
-            id: this.selectedCategoryId
-          },
-          startDate: new Date().toISOString(),
-          image: { data: base64image },
-        };
-        console.log(this.news)
-        const newsObservable = this.editingNews
-          ? this.newsService.updateNews(this.news)
-          : this.newsService.createNews(this.news);
+    if (this.editingNews && !this.selectedFile) {
+      this.news = {
+        ...this.news,
+        category: {
+          id: undefined,
+          name: this.selectedCategoryName,
+        },
+        startDate: new Date().toISOString(),
+      };
 
-        newsObservable.subscribe({
-          next: (res) => {
-            console.log(res);
-            this.showAlert = true;
-          },
-          error: (err) => {
-            console.error(err);
-          },
-        });
-      },
-      error: (err) => console.error(err),
-    });
+      this.newsService.updateNews(this.news).subscribe({
+        next: (res) => {
+          console.log(res);
+          this.showAlert = true;
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+    } else if(this.selectedFile) {
+      this.encodeImageToBase64(this.selectedFile).subscribe({
+        next: (res) => {
+          const base64image = res;
+
+          this.news = {
+            ...this.news,
+            category: {
+              id: undefined,
+              name: this.selectedCategoryName,
+            },
+            startDate: new Date().toISOString(),
+            image: { data: base64image },
+          };
+
+          const newsObservable = this.editingNews
+            ? this.newsService.updateNews(this.news)
+            : this.newsService.createNews(this.news);
+
+          newsObservable.subscribe({
+            next: (res) => {
+              console.log(res);
+              this.showAlert = true;
+            },
+            error: (err) => {
+              console.error(err);
+            },
+          });
+        },
+        error: (err) => console.error(err),
+      });
+    }
   }
 
   encodeImageToBase64(file: File): Observable<string> {
@@ -108,5 +131,18 @@ export class CreateNewsComponent implements OnInit {
     reader.readAsBinaryString(file);
 
     return result;
+  }
+
+  addCategory() {
+    let category = {
+      name: this.newCategoryName,
+    } as NewsCategory;
+
+    this.newsCategoryService.addNewCategory(category).subscribe({
+      next: (res) => {
+        this.loadCategories();
+      },
+      error: (err) => console.error(err),
+    });
   }
 }

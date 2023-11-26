@@ -21,6 +21,9 @@ namespace NewsPortal.WebAppApi.Repositories
 			if (!string.IsNullOrWhiteSpace(param.CategoryName))
 				query = query.Where(n => n.Category.Name == param.CategoryName);
 
+			if (param.EndDate != null)
+				query = query.Where(n => n.EndDate >= param.EndDate);
+
 			if (!string.IsNullOrWhiteSpace(param.SearchText))
 				query = query.Where(n => 
 					n.Title.Contains(param.SearchText) ||
@@ -34,6 +37,7 @@ namespace NewsPortal.WebAppApi.Repositories
 				.Include(n => n.Category)
 				.Skip(param.PageIndex * param.PageSize)
 				.Take(param.PageSize)
+				.OrderByDescending(n => n.IsTrending)
 				.ToListAsync();
 
 			return news;

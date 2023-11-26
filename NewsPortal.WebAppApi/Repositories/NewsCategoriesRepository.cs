@@ -20,7 +20,15 @@ namespace NewsPortal.WebAppApi.Repositories
             return categories;
         }
 
-        public async Task<NewsCategory> AddNewsCategory(NewsCategory category)
+		public async Task<NewsCategory> GetCategoryByName(string name)
+		{
+			var category = await context.NewsCategories
+				.FirstOrDefaultAsync(c => c.Name == name);
+
+			return category;
+		}
+
+		public async Task<NewsCategory> AddNewsCategory(NewsCategory category)
         {
             context.NewsCategories.Add(category);
             await context.SaveChangesAsync();

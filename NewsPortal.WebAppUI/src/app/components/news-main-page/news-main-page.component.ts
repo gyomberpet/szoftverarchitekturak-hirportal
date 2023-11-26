@@ -24,6 +24,7 @@ export class NewsMainPageComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     let requestParams: NewsRequestParams = {
       includeImage: true,
+      endDate: new Date()
     } as NewsRequestParams;   
 
     this.fetchData(requestParams);

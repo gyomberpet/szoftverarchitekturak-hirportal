@@ -15,4 +15,8 @@ export class NewsCategoryService {
   getCategories(): Observable<NewsCategory[]> {
     return this.http.get<NewsCategory[]>(this.baseUrl);
   }
+
+  addNewCategory(category: NewsCategory): Observable<NewsCategory> {
+    return this.http.post<NewsCategory>(this.baseUrl, category);
+  }
 }

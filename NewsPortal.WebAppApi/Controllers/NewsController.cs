@@ -17,10 +17,10 @@ namespace NewsPortal.WebAppApi.Controllers
 		private readonly ILogger<NewsController> logger;
 		private readonly INewsRepository newsRepository;
 		private readonly IImageRepository imageRepository;
-		private readonly ICategoriesRepository categoriesRepository;
+		private readonly INewsCategoriesRepository categoriesRepository;
 
 		public NewsController(ILogger<NewsController> logger, INewsRepository newsRepository, 
-			IImageRepository imageRepository, ICategoriesRepository categoriesRepository)
+			IImageRepository imageRepository, INewsCategoriesRepository categoriesRepository)
 		{
 			this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 			this.newsRepository = newsRepository ?? throw new ArgumentNullException(nameof(newsRepository));
@@ -67,6 +67,8 @@ namespace NewsPortal.WebAppApi.Controllers
 
 			if (category == null) return BadRequest();
 
+			news.Category = category;
+
 			var uploadedImage = await imageRepository.UploadImage(news.Image);
 			news.ImageId = uploadedImage.Id;
 
@@ -81,6 +83,10 @@ namespace NewsPortal.WebAppApi.Controllers
 		{
 			if (news == null) return BadRequest();
 
+			var category = await categoriesRepository.GetCategoryByName(news.Category.Name);
+
+			news.CategoryID = category.Id;
+			news.Category = null;
 			var updated = await newsRepository.UpdateNews(news);
 
 			return Ok(updated);
