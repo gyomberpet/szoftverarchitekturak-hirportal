@@ -13,7 +13,7 @@ export class DeleteNewsComponent {
   constructor(public activeModal: NgbActiveModal) {}
 
   confirmDelete(): void {
-    // Optionally, you can perform additional logic before confirming the delete
+    
     this.activeModal.close('delete');
   }
 

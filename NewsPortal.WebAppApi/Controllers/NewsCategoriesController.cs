@@ -11,11 +11,9 @@ namespace NewsPortal.WebAppApi.Controllers
     public class NewsCategoriesController : ControllerBase
     {
         private readonly INewsCategoriesRepository newsCategoriesRepository;
-        private readonly IConfiguration configuration;
 
-        public NewsCategoriesController(IConfiguration configuration, INewsCategoriesRepository newsCategoriesRepository)
+        public NewsCategoriesController(INewsCategoriesRepository newsCategoriesRepository)
         {
-            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.newsCategoriesRepository = newsCategoriesRepository ?? throw new ArgumentNullException(nameof(newsCategoriesRepository));
         }
 

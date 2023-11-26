@@ -23,7 +23,7 @@
             <article>
                 <header class="mb-4">
                     <!-- Post title with larger font size -->
-                    <h1 class="fw-bolder mb-1" style="font-size: 3em;">
+                    <h1 class="fw-bolder mb-1" style="font-size: xx-large;">
                         {{ news.title }}
                         <!-- Big yellow star icon -->
                         <!-- SVG csillag ikon -->
@@ -52,9 +52,8 @@
       </h3>
 
       <article class="blog-post">
-        <h2 class="blog-post-title">{{ news.subtitle }}</h2>
-        <p class="blog-post-meta">{{ news.startDate | date:'yyyy-MM-dd' }}</p>
-        <hr class="d-md-none"> <!-- Hide hr on screens larger than md -->
+        <h2 style="padding-bottom: 30px;" class="blog-post-title">{{ news.subtitle }}</h2>
+        <hr class="d-md-none"> 
         <div class="news-description">
           <p class="text-break">{{ news.content }}</p>
         </div>

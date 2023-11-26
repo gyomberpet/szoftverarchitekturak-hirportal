@@ -113,7 +113,7 @@ namespace NewsPortal.WebAppApi.Controllers
 
             var user = await usersRepository.GetUserByEmail(loginInfo.EmailAddress);
 
-            if (user.Password != loginInfo.Password) 
+            if (user?.Password != loginInfo.Password) 
             {
 				return Unauthorized();
 			}

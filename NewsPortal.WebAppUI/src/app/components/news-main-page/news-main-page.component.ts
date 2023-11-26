@@ -5,6 +5,7 @@ import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, fromEvent, tap } from 'rxjs';
 import { News } from 'src/app/models/news';
 import { NewsRequestParams } from 'src/app/models/newsRequestParams';
+import { AuthenticationService } from 'src/app/service/authentication.service';
 import { NewsService } from 'src/app/service/news.service';
 import { UsersService } from 'src/app/service/users.service';
 
@@ -17,11 +18,18 @@ export class NewsMainPageComponent implements OnInit, AfterViewInit {
   @ViewChild('search') search: ElementRef;
 
   newsList: News[];
+  isAdmin : Boolean = false;
 
-
-  constructor(private newsService: NewsService, private usersService:UsersService) {}
+  constructor(private newsService: NewsService, private usersService:UsersService, private auth: AuthenticationService
+    ) {}
 
   ngOnInit(): void {
+    var user = this.auth.getLoggingUser();
+    if(user.isAdmin != undefined)
+    {
+      this.isAdmin = user.isAdmin;
+    }
+
     let requestParams: NewsRequestParams = {
       includeImage: true,
       endDate: new Date()

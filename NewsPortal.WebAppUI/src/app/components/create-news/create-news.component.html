@@ -143,7 +143,6 @@
               {{ editingNews ? "Update" : "Create" }} News
             </button>
 
-            <!-- Display a message if the file is required and not selected -->
             <div
               *ngIf="!this.editingNews && (!selectedFile && (newsForm.submitted || showAlert))"
               class="text-danger"
