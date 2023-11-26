@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthorizationService } from 'src/app/service/authorization.service';
 import { AuthenticationService } from 'src/app/service/authentication.service';
+import { NewsRequestParams } from 'src/app/models/newsRequestParams';
 
 @Component({
   selector: 'app-news-details-page',
@@ -44,6 +45,21 @@ export class NewsDetailsPageComponent implements OnInit {
             next: (res: News[]) => {
               // Assuming randomNewsList is an array of News objects
               this.randomNewsList = res.filter(x => x.id !== this.news.id);
+              if (this.randomNewsList.length == 0) {
+                let params: NewsRequestParams = {
+                  includeImage: true,
+                  pageSize: 3
+                } as NewsRequestParams;
+                this.newsService
+                .getNews(params)
+                .subscribe({
+                  next: (res: News[]) => {
+                    this.randomNewsList = res;
+                    this.randomNewsList = res.filter(x => x.id !== this.news.id);
+                  },
+                  error: (err) => console.error(err),
+                });
+              }
             },
             error: (err) => console.error(err),
           });

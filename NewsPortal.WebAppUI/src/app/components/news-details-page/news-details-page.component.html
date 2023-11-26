@@ -33,7 +33,8 @@
                     <div class="text-muted fst-italic mb-2">Posted on {{ news.startDate | date:'yyyy-MM-dd' }}</div>
                     
                     <!-- Post categories-->
-                    <a class="badge bg-secondary text-decoration-none link-light" >{{ news.category.name }}</a>
+                    
+                    <a *ngIf="news?.category?.name" class="badge bg-secondary text-decoration-none link-light" >{{ news.category.name }}</a>
                 </header>
             </article>
         </div>

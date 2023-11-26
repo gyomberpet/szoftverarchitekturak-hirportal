@@ -49,6 +49,46 @@
           </div>
 
           <div class="mb-3">
+            <div
+              style="
+                display: flex;
+                padding-bottom: 10px;
+                justify-content: space-between;
+              "
+            >
+              <label for="subtitle" class="form-label">Category</label>
+              &nbsp;
+              <div style="display: flex;">
+                <input
+                  style="width: 200px"
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="newCategoryName"
+                  name="newCategoryName"
+                />
+                &nbsp;
+                <button type="button" (click)="addCategory()">
+                  Add new category
+                </button>
+              </div>
+            </div>
+
+            <select
+              name="category"
+              [(ngModel)]="selectedCategoryName"
+              class="form-select"
+              selected="selectedCategoryName"
+            >
+              <option
+                *ngFor="let category of categories"
+                [value]="category.name"
+              >
+                {{ category.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="mb-3">
             <label for="content" class="form-label">Content</label>
             <textarea
               class="form-control"
@@ -84,25 +124,41 @@
           </div>
 
           <div class="mb-3">
-            <label class="custom-control-label" for="isTrending">Trending?</label>
+            <label class="custom-control-label" for="isTrending"
+              >Trending?</label
+            >
             <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" [(ngModel)]="news.isTrending" name="isTrending">
+              <input
+                type="checkbox"
+                class="custom-control-input"
+                [(ngModel)]="news.isTrending"
+                name="isTrending"
+              />
             </div>
           </div>
 
           <div class="mb-3">
-            <input type="file" (change)="onFileSelected($event)">
-            <button type="submit" >{{ editingNews ? 'Update' : 'Create' }} News</button>
+            <input type="file" (change)="onFileSelected($event)" />
+            <button class="btn btn-primary" type="submit">
+              {{ editingNews ? "Update" : "Create" }} News
+            </button>
 
             <!-- Display a message if the file is required and not selected -->
-            <div *ngIf="!selectedFile && (newsForm.submitted || showAlert)" class="text-danger">
+            <div
+              *ngIf="!this.editingNews && (!selectedFile && (newsForm.submitted || showAlert))"
+              class="text-danger"
+            >
               File is required
             </div>
           </div>
           <div *ngIf="showAlert" class="alert alert-success" role="alert">
-  {{ editingNews ? 'Event successfully edited!' : 'Event successfully created!' }}
-  <button class="btn btn-primary" [routerLink]="['/']">Back</button>
-</div>
+            {{
+              editingNews
+                ? "News successfully edited!"
+                : "News successfully created!"
+            }}
+            <button class="btn btn-primary" [routerLink]="['/']">Back</button>
+          </div>
         </form>
       </div>
     </div>

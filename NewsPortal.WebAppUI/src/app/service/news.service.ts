@@ -22,10 +22,12 @@ export class NewsService {
       params = params.append('categoryName', requestParams.categoryName);
     if (requestParams.searchText)
       params = params.append('searchText', requestParams.searchText);
-    if (requestParams.categoryName)
+    if (requestParams.pageIndex)
       params =params.append('pageIndex', requestParams.pageIndex ?? '');
-    if (requestParams.categoryName)
+    if (requestParams.pageSize)
       params =params.append('pageSize', requestParams.pageSize ?? '');
+    if (requestParams.endDate)
+      params =params.append('endDate', requestParams.endDate.toISOString() ?? '');
     
     return this.http.get<News[]>(this.baseUrl, { params: params });
   }
