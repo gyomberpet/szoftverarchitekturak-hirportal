@@ -113,7 +113,7 @@ namespace NewsPortal.WebAppApi.Controllers
 
             var user = await usersRepository.GetUserByEmail(loginInfo.EmailAddress);
 
-            if (user?.Password != loginInfo.Password) 
+            if (user == null || !BCrypt.Net.BCrypt.EnhancedVerify(loginInfo.Password, user.Password)) 
             {
 				return Unauthorized();
 			}
@@ -134,11 +134,13 @@ namespace NewsPortal.WebAppApi.Controllers
 
             try
             {
-				var user = new User()
+                var hashedPassword = BCrypt.Net.BCrypt.EnhancedHashPassword(loginInfo.Password, 10);
+
+                var user = new User()
 				{
 					UserName = loginInfo.UserName,
 					EmailAddress = loginInfo.EmailAddress,
-					Password = loginInfo.Password,
+					Password = hashedPassword,
 					IsAdmin = false
 				};
 
